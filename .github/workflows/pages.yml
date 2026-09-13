@@ -47,6 +47,13 @@ jobs:
       - name: Input boundary
         run: node tools/test-sanitize.mjs
 
+      # Every imported name must actually be exported. This is what a
+      # bundler would catch and there is no bundler, so it is caught
+      # here — a bad import is a ReferenceError at the first call site
+      # in whichever file happens to use it, and nothing else notices.
+      - name: Imports resolve to real exports
+        run: node tools/check-imports.mjs
+
       # A guest must be able to open what the host sends it. This is the
       # ordering the "player isn't let in" bug broke, and it fails
       # silently when it does, so it is pinned.

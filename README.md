@@ -95,6 +95,7 @@ node tools/test-rules.mjs       # 55 assertions on the rules engine
 node tools/test-sanitize.mjs    # 57 on the input boundary
 node tools/test-handshake.mjs   # 7 on the host/guest key exchange
 node tools/check-url-sinks.mjs  # no player string reaches an href or a src
+node tools/check-imports.mjs    # every imported name is really exported
 node tools/check-assets.mjs     # walks the real module import graph
 node tools/sim-balance.mjs 400 4 8
 ```
@@ -107,7 +108,7 @@ The rules engine is pure — no DOM, no network, no timers — so the host, the 
 
 That suite also documents where the filters stop. Neither `esc()` nor `cleanName()` neutralises a URI scheme — `javascript:x=1` passes through both, because a colon is not a markup character. The app is safe in a URL position only because no player-controlled string is ever assigned to an `href` or a `src`. `check-url-sinks.mjs` enforces that, and I confirmed it fails on a deliberately injected violation rather than assuming it would.
 
-There is a third layer under both: DOMPurify, vendored, parsing every string the HUD renders and rebuilding it from a fixed allowlist of emphasis tags with no attributes at all. That is not a fix for a live hole — the first two layers hold, and an independent audit confirmed it. It exists because those two layers are *discipline*: they work only while every ingress path strips and every sink escapes. Three layers means a future sink that forgets to escape degrades to stripped formatting rather than to script execution.
+There is a third layer under both: DOMPurify, vendored, parsing every string the HUD renders and rebuilding it from a fixed allowlist of emphasis tags with no attributes at all. It returns DOM nodes rather than an HTML string, so the render path assigns with `replaceChildren` and never parses HTML a second time. That is not a fix for a live hole — the first two layers hold, and an independent audit confirmed it. It exists because those two layers are *discipline*: they work only while every ingress path strips and every sink escapes. Three layers means a future sink that forgets to escape degrades to stripped formatting rather than to script execution.
 
 `test-handshake.mjs` pins the order of the key exchange. A guest learns the host's public key from the roster broadcast, and the transport drops anything it cannot open without a word — so if the roster ever stops being applied on the guest, a joining player is silently locked out while everything looks healthy. That bug shipped once.
 

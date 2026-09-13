@@ -21,7 +21,13 @@
 import { createTable } from "./table.js";
 import { openRoom } from "./net.js";
 import { makeRoomCode } from "./crypto.js";
-import { cleanName, cleanAvatar, esc, cleanCode } from "./sanitize.js";
+import {
+  cleanName,
+  cleanAvatar,
+  esc,
+  cleanCode,
+  markupNodes,
+} from "./sanitize.js";
 import { ROLE_LIST, roleName, valueOf, artUrl } from "./cards.js";
 import {
   createMatch,
@@ -74,7 +80,7 @@ const $$ = (sel) => [...document.querySelectorAll(sel)];
 const el = (tag, cls, content) => {
   const node = document.createElement(tag);
   if (cls) node.className = cls;
-  if (content != null) node.innerHTML = markup(content);
+  if (content != null) node.replaceChildren(...markupNodes(content));
   return node;
 };
 
@@ -433,10 +439,13 @@ function draw() {
     scores.append(chip);
   });
 
-  /* Markup because the prompt emphasises names in <b>. Every name it
-     interpolates goes through nameOf() -> esc(), and names were already
-     stripped of markup characters at ingress. See the el() contract. */
-  $("#hud-prompt").innerHTML = markup(promptFor(s, myTurn, activePid));
+  /* Assigned as sanitised nodes rather than as an HTML string, so the
+     only parse of this text is the one DOMPurify performed. Names it
+     interpolates still go through nameOf() -> esc() first, and were
+     already stripped of markup characters at ingress. */
+  $("#hud-prompt").replaceChildren(
+    ...markupNodes(promptFor(s, myTurn, activePid)),
+  );
   drawActions(s, myTurn);
   drawDeduction(s);
   drawLog(s);
@@ -1182,13 +1191,13 @@ $("#modal-answer").addEventListener("transitionend", () => {});
 function fillAnswerModal() {
   const s = app.view;
   if (!s || s.phase !== PHASE.ANSWERING) return;
-    const asker = nameOf(s, s.pending.asker);
-    /* nameOf already escapes, and markup() parses to an allowlist on top
-       of that. The <b> survives because it is in the allowlist; anything
+  const asker = nameOf(s, s.pending.asker);
+  /* nameOf escapes, and markupNodes parses to an allowlist on top of
+       that. The <b> survives because it is in the allowlist; anything
        else a name might have carried does not. */
-    $("#answer-question").innerHTML = markup(
-      `<b>${asker}</b> is asking what <b>they</b> are.`,
-    );
+  $("#answer-question").replaceChildren(
+    ...markupNodes(`<b>${asker}</b> is asking what <b>they</b> are.`),
+  );
   const box = $("#answer-roles");
   box.textContent = "";
   ROLE_LIST.forEach((r) => {

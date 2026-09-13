@@ -51,10 +51,10 @@ export const esc = (str) =>
 
 /** A room code, uppercased and limited to the alphabet we generate. */
 export const cleanCode = (raw) =>
-  String(raw || "")
-    .toUpperCase()
-    .replace(/[^A-Z0-9-]/g, "")
-    .slice(0, 12);
+ String(raw || "")
+  .toUpperCase()
+  .replace(/[^A-Z0-9-]/g, "")
+  .slice(0, 12);
 
 /* ── layer three: a parser that cannot be talked into compliance ──
 
@@ -76,10 +76,10 @@ export const cleanCode = (raw) =>
 import DOMPurify from "../vendor/dompurify.es.min.mjs";
 
 const ALLOWED = {
-  ALLOWED_TAGS: ["b", "i", "em", "strong", "span", "br"],
-  ALLOWED_ATTR: [],
-  ALLOW_DATA_ATTR: false,
-  KEEP_CONTENT: true,
+ ALLOWED_TAGS: ["b", "i", "em", "strong", "span", "br"],
+ ALLOWED_ATTR: [],
+ ALLOW_DATA_ATTR: false,
+ KEEP_CONTENT: true,
 };
 
 /**
@@ -91,7 +91,28 @@ const ALLOWED = {
  * than the parser, so the tests exercise the safe direction.
  */
 export const markup = (str) => {
-  const raw = String(str ?? "");
-  if (typeof DOMPurify?.sanitize !== "function") return esc(raw);
-  return DOMPurify.sanitize(raw, ALLOWED);
+ const raw = String(str ?? "");
+ if (typeof DOMPurify?.sanitize !== "function") return esc(raw);
+ return DOMPurify.sanitize(raw, ALLOWED);
+};
+
+/**
+ * The same sanitising, returned as nodes instead of an HTML string.
+ *
+ * Preferred over markup(): the caller assigns with replaceChildren, so
+ * no string is ever parsed as HTML a second time and there is no
+ * innerHTML anywhere in the render path. The parse DOMPurify already
+ * did is the only parse.
+ *
+ * Returns a DocumentFragment in a browser. Where there is no DOM the
+ * input is text, so a text node is the honest answer.
+ */
+export const markupNodes = (str) => {
+ const raw = String(str ?? "");
+ if (
+  typeof DOMPurify?.sanitize !== "function" ||
+  typeof document === "undefined"
+ )
+  return [raw];
+ return [DOMPurify.sanitize(raw, { ...ALLOWED, RETURN_DOM_FRAGMENT: true })];
 };

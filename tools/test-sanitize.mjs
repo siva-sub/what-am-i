@@ -8,19 +8,25 @@
    Run:  node tools/test-sanitize.mjs
    ───────────────────────────────────────────────────────────── */
 
-import { cleanName, cleanAvatar, esc, cleanCode, markup } from "../js/sanitize.js";
+import {
+ cleanName,
+ cleanAvatar,
+ esc,
+ cleanCode,
+ markup,
+} from "../js/sanitize.js";
 
 let pass = 0;
 let fail = 0;
 
 const ok = (label, cond, detail = "") => {
-  if (cond) {
-    pass++;
-    console.log(`  ok  ${label}`);
-  } else {
-    fail++;
-    console.log(`  FAIL ${label}${detail ? "  → " + detail : ""}`);
-  }
+ if (cond) {
+  pass++;
+  console.log(`  ok  ${label}`);
+ } else {
+  fail++;
+  console.log(`  FAIL ${label}${detail ? "  → " + detail : ""}`);
+ }
 };
 
 /* Anything that could be read as a tag, an attribute break, or a URI
@@ -30,27 +36,27 @@ const isInert = (s) => !/[<>"'`\\/]/.test(s);
 
 console.log("\n== NAMES ==");
 const NAMES = [
-  ["<img src=x onerror=alert(1)>", "tag injection"],
-  ['" onmouseover="alert(1)', "attribute breakout"],
-  /* Assembled rather than written literally: a bare `javascript:` string
+ ["<img src=x onerror=alert(1)>", "tag injection"],
+ ['" onmouseover="alert(1)', "attribute breakout"],
+ /* Assembled rather than written literally: a bare `javascript:` string
      trips every scanner that looks for dangerous URLs, and this one is a
      test fixture that never reaches a browser. */
-  ["java" + "script:alert(1)", "protocol handler"],
-  ["</td></table><script>alert(1)</script>", "element escape"],
-  ["Bram<script>", "unclosed tag"],
-  ["`+alert(1)+`", "template literal breakout"],
-  ["\\u003cimg src=x\\u003e", "escaped angle brackets"],
-  /* Pre-encoded. If the strip list ever stopped removing '&', this is the
+ ["java" + "script:alert(1)", "protocol handler"],
+ ["</td></table><script>alert(1)</script>", "element escape"],
+ ["Bram<script>", "unclosed tag"],
+ ["`+alert(1)+`", "template literal breakout"],
+ ["\\u003cimg src=x\\u003e", "escaped angle brackets"],
+ /* Pre-encoded. If the strip list ever stopped removing '&', this is the
      vector that would come back to life, because the browser would decode
      it into a real tag. Contributed by a parallel audit. */
-  ["&lt;img src=x onerror=alert(1)&gt;", "pre-encoded entity"],
-  ["&#60;img src=x&#62;", "numeric entity"],
-  ["&amp;lt;script&amp;gt;", "doubly-encoded entity"],
+ ["&lt;img src=x onerror=alert(1)&gt;", "pre-encoded entity"],
+ ["&#60;img src=x&#62;", "numeric entity"],
+ ["&amp;lt;script&amp;gt;", "doubly-encoded entity"],
 ];
 
 NAMES.forEach(([raw, why]) => {
-  const out = cleanName(raw);
-  ok(`neutralises ${why}`, isInert(out), JSON.stringify(out));
+ const out = cleanName(raw);
+ ok(`neutralises ${why}`, isInert(out), JSON.stringify(out));
 });
 
 ok("keeps ordinary names intact", cleanName("Bram") === "Bram");
@@ -62,14 +68,14 @@ ok("null is safe", cleanName(null) === "");
 
 console.log("\n== AVATARS ==");
 const AVATARS = [
-  ["<img src=x onerror=alert(1)>", "tag injection"],
-  ['"><script>alert(1)</script>', "attribute breakout"],
-  ["<svg onload=alert(1)>", "svg load"],
+ ["<img src=x onerror=alert(1)>", "tag injection"],
+ ['"><script>alert(1)</script>', "attribute breakout"],
+ ["<svg onload=alert(1)>", "svg load"],
 ];
 
 AVATARS.forEach(([raw, why]) => {
-  const out = cleanAvatar(raw);
-  ok(`neutralises ${why}`, isInert(out), JSON.stringify(out));
+ const out = cleanAvatar(raw);
+ ok(`neutralises ${why}`, isInert(out), JSON.stringify(out));
 });
 
 ok("keeps a real glyph", cleanAvatar("🜂") === "🜂");
@@ -92,12 +98,12 @@ ok("leaves ordinary text alone", esc("Bram") === "Bram");
    and both passes strip exactly those. */
 console.log("\n== DOUBLE PASS: CLEAN THEN ESCAPE ==");
 NAMES.forEach(([raw, why]) => {
-  const rendered = esc(cleanName(raw));
-  ok(
-    `${why} leaves no character that can open markup`,
-    !/[<>"'`]/.test(rendered),
-    JSON.stringify(rendered),
-  );
+ const rendered = esc(cleanName(raw));
+ ok(
+  `${why} leaves no character that can open markup`,
+  !/[<>"'`]/.test(rendered),
+  JSON.stringify(rendered),
+ );
 });
 
 console.log("\n== URL CONTEXT: THE LIMIT OF esc() ==");
@@ -112,9 +118,9 @@ console.log("\n== URL CONTEXT: THE LIMIT OF esc() ==");
    future edit wiring a name into an href fails here rather than in
    production. tools/check-url-sinks.mjs enforces the other half. */
 ok(
-  "esc() alone does NOT neutralise a URI scheme (so never use it in href/src)",
-  esc("java" + "script:alert(1)") === "java" + "script:alert(1)",
-  "if this ever starts escaping schemes, revisit the URL guard",
+ "esc() alone does NOT neutralise a URI scheme (so never use it in href/src)",
+ esc("java" + "script:alert(1)") === "java" + "script:alert(1)",
+ "if this ever starts escaping schemes, revisit the URL guard",
 );
 /* And neither does the ingress strip, which is the less obvious half.
    cleanName removes brackets and quotes but keeps the colon, so
@@ -126,13 +132,14 @@ ok(
    is enforced as one: tools/check-url-sinks.mjs fails the build if a name
    or avatar ever reaches a URL attribute. */
 ok(
-  "nor does the ingress strip (the colon is not in its strip set)",
-  cleanName("java" + "script:alert(1)").includes(":"),
-  JSON.stringify(cleanName("java" + "script:alert(1)")),
+ "nor does the ingress strip (the colon is not in its strip set)",
+ cleanName("java" + "script:alert(1)").includes(":"),
+ JSON.stringify(cleanName("java" + "script:alert(1)")),
 );
 
-
-console.log("\n== LAYER 3: markup() NEVER EMITS A TAG OUTSIDE THE ALLOWLIST ==");
+console.log(
+ "\n== LAYER 3: markup() NEVER EMITS A TAG OUTSIDE THE ALLOWLIST ==",
+);
 /* The grammar the HUD is allowed to produce. Anything else — a script, an
    event handler, a style, a data URI, an SVG — must not survive.
 
@@ -148,26 +155,30 @@ console.log("\n== LAYER 3: markup() NEVER EMITS A TAG OUTSIDE THE ALLOWLIST ==")
    only dangerous as an attribute. */
 const ALLOWED_TAGS = ["b", "i", "em", "strong", "span", "br"];
 const MARKUP_VECTORS = [
-  ["<img src=x onerror=alert(1)>", "img with handler"],
-  ["<script>alert(1)</script>", "script tag"],
-  ["<svg onload=alert(1)>", "svg load"],
-  ["<style>body{display:none}</style>", "style tag"],
-  ['<iframe src="https://evil.test"></iframe>', "iframe"],
-  ['<img src="data:text/html,x">', "data URI"],
-  ['<b onclick="alert(1)">bold</b>', "handler on an allowed tag"],
-  /* Assembled, not literal: a bare scheme string trips every scanner
+ ["<img src=x onerror=alert(1)>", "img with handler"],
+ ["<script>alert(1)</script>", "script tag"],
+ ["<svg onload=alert(1)>", "svg load"],
+ ["<style>body{display:none}</style>", "style tag"],
+ ['<iframe src="https://evil.test"></iframe>', "iframe"],
+ ['<img src="data:text/html,x">', "data URI"],
+ ['<b onclick="alert(1)">bold</b>', "handler on an allowed tag"],
+ /* Assembled, not literal: a bare scheme string trips every scanner
      looking for dangerous URLs, and this is a fixture that never
      reaches a browser. */
-  ['<a href="' + "java" + 'script:alert(1)">click</a>', "javascript: URL"],
-  ["<b><script>alert(1)</script></b>", "script nested in allowed tag"],
+ ['<a href="' + "java" + 'script:alert(1)">click</a>', "javascript: URL"],
+ ["<b><script>alert(1)</script></b>", "script nested in allowed tag"],
 ];
 MARKUP_VECTORS.forEach(([vec, why]) => {
-  const out = markup(vec);
-  const tags = [...out.matchAll(/<\s*\/?\s*([a-zA-Z0-9]+)/g)].map((x) =>
-    x[1].toLowerCase(),
-  );
-  const bad = tags.filter((t) => !ALLOWED_TAGS.includes(t));
-  ok(`markup() drops ${why}`, bad.length === 0, `got tags ${JSON.stringify(bad)}`);
+ const out = markup(vec);
+ const tags = [...out.matchAll(/<\s*\/?\s*([a-zA-Z0-9]+)/g)].map((x) =>
+  x[1].toLowerCase(),
+ );
+ const bad = tags.filter((t) => !ALLOWED_TAGS.includes(t));
+ ok(
+  `markup() drops ${why}`,
+  bad.length === 0,
+  `got tags ${JSON.stringify(bad)}`,
+ );
 });
 
 /* Emphasis survives DOMPurify (it is in the allowlist) but NOT the
@@ -179,30 +190,29 @@ MARKUP_VECTORS.forEach(([vec, why]) => {
    paths agree is reported rather than silently skipped. */
 const USING_PARSER = markup("<b>x</b>").includes("<b>x</b>");
 if (USING_PARSER) {
-  ok(
-    "markup() keeps the emphasis the HUD needs",
-    markup("<b>Cyrus</b> asks").includes("<b>Cyrus</b>"),
-    markup("<b>Cyrus</b> asks"),
-  );
-  ok(
-    "markup() keeps bold while dropping what rode along with it",
-    markup('<b>ok</b><img src=x onerror=alert(1)><b>more</b>') ===
-      "<b>ok</b><b>more</b>",
-    markup('<b>ok</b><img src=x onerror=alert(1)><b>more</b>'),
-  );
+ ok(
+  "markup() keeps the emphasis the HUD needs",
+  markup("<b>Cyrus</b> asks").includes("<b>Cyrus</b>"),
+  markup("<b>Cyrus</b> asks"),
+ );
+ ok(
+  "markup() keeps bold while dropping what rode along with it",
+  markup("<b>ok</b><img src=x onerror=alert(1)><b>more</b>") ===
+   "<b>ok</b><b>more</b>",
+  markup("<b>ok</b><img src=x onerror=alert(1)><b>more</b>"),
+ );
 } else {
-  console.log(
-    "  ok  emphasis is browser-only: no DOM here, so markup() escapes instead",
-  );
-  ok(
-    "the Node fallback escapes the emphasis rather than emitting it",
-    markup("<b>Cyrus</b> asks") === "&lt;b&gt;Cyrus&lt;/b&gt; asks",
-    markup("<b>Cyrus</b> asks"),
-  );
+ console.log(
+  "  ok  emphasis is browser-only: no DOM here, so markup() escapes instead",
+ );
+ ok(
+  "the Node fallback escapes the emphasis rather than emitting it",
+  markup("<b>Cyrus</b> asks") === "&lt;b&gt;Cyrus&lt;/b&gt; asks",
+  markup("<b>Cyrus</b> asks"),
+ );
 }
 ok("markup() handles null", markup(null) === "");
 ok("markup() handles a number", typeof markup(42) === "string");
-
 
 console.log("\n== ROOM CODES ==");
 ok("uppercases", cleanCode("moth-k7qp") === "MOTH-K7QP");
@@ -212,6 +222,6 @@ ok("caps length", cleanCode("A".repeat(50)).length === 12);
 ok("empty is safe", cleanCode(null) === "");
 
 console.log(
-  `\n${"=".repeat(46)}\n  ${pass} passed, ${fail} failed\n${"=".repeat(46)}`,
+ `\n${"=".repeat(46)}\n  ${pass} passed, ${fail} failed\n${"=".repeat(46)}`,
 );
 process.exit(fail ? 1 : 0);
