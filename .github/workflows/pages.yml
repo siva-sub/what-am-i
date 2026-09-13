@@ -47,6 +47,13 @@ jobs:
       - name: Input boundary
         run: node tools/test-sanitize.mjs
 
+      # Neither esc() nor cleanName() neutralises a URI scheme, so the
+      # only thing keeping a javascript: URL out of the page is that no
+      # name is ever written into an href or a src. That is an
+      # architectural fact, so it is checked rather than trusted.
+      - name: No player string reaches a URL
+        run: node tools/check-url-sinks.mjs
+
       # A module that 404s is invisible until someone clicks a button on
       # the live site, so walk the whole import graph first.
       - name: Every referenced file exists
