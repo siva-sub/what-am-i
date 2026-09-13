@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What Am I? — a game of not knowing who you are</title>
+<meta name="description" content="You cannot read your own identity. Everyone else can, and they have every reason to lie about it. Play with friends in a browser — no install, no account.">
+<meta name="theme-color" content="#0a0908">
+
+<link rel="icon" href="assets/cards/back.webp">
+<link rel="apple-touch-icon" href="assets/cards/back.webp">
+<meta property="og:title" content="What Am I?">
+<meta property="og:description" content="You cannot read your own identity. Everyone else can. They have every reason to lie about it.">
+<meta property="og:image" content="assets/cards/cover.webp">
+<meta property="og:type" content="website">
+
+<link rel="preload" as="image" href="assets/cards/back.webp">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     1 · TITLE
+     ═══════════════════════════════════════════════════════════ -->
+<section class="screen on" id="hero">
+  <div class="hero">
+    <div class="hero-in">
+      <div class="hero-mark"><img src="assets/cards/cover.webp" alt=""></div>
+      <h1>What Am I?</h1>
+      <p class="hero-sub">
+        You cannot read your own identity. Everyone else can —
+        and they have every reason to lie about it.
+      </p>
+      <div class="hero-actions">
+        <button class="btn primary wide" data-go="learn">Learn it in 60 seconds</button>
+        <div class="btn-row" style="justify-content:center">
+          <button class="btn ghost" data-go="practice">Practice alone</button>
+          <button class="btn ghost" data-go="menu">Play with friends</button>
+        </div>
+      </div>
+      <p class="muted" style="font-size:12px;margin-top:22px">
+        3–8 players · 15–25 min · no install, no account
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     2 · ONBOARDING
+     ═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="learn">
+  <div class="wrap">
+    <button class="back-link" data-go="hero">← back</button>
+
+    <!-- slide 1 -->
+    <div class="slide on" data-slide="0">
+      <div class="kicker">The one rule</div>
+      <h2>You cannot read your own card.</h2>
+      <div class="slide-visual">
+        <div class="mini"><img src="assets/cards/fool-a.webp" alt=""></div>
+        <div class="mini"><img src="assets/cards/widow-a.webp" alt=""></div>
+        <div class="mini you"><img src="assets/cards/back.webp" alt=""></div>
+        <div class="mini"><img src="assets/cards/prince.webp" alt=""></div>
+      </div>
+      <p>
+        Three of those cards are not yours, so you can read them. The gold one is yours.
+        You will never see its face — not by lifting it, not by tilting it, not by asking the game nicely.
+      </p>
+      <p class="muted">
+        You are the only person at the table who does not know what you are.
+      </p>
+    </div>
+
+    <!-- slide 2 -->
+    <div class="slide" data-slide="1">
+      <div class="kicker">Your turn — pick one</div>
+      <h2>Ask, swap, or declare.</h2>
+      <p>
+        <b>Ask.</b> Name a player and ask them what you are. They answer with a role name.<br><br>
+        <b>Swap.</b> Spend a token to push your card into the central pile and take a new one
+        off the top. The table watches you change. You still cannot see the new one.<br><br>
+        <b>Declare.</b> Name your own role out loud and turn over your card.
+      </p>
+      <p class="muted">
+        You start each round with two swap tokens and two of them is usually one too many.
+      </p>
+    </div>
+
+    <!-- slide 3 -->
+    <div class="slide" data-slide="2">
+      <div class="kicker">Why anyone ever lies</div>
+      <h2>Every answer is against the speaker's interest.</h2>
+      <div class="tension">
+        <div class="tension-row">
+          <div class="g">🜁</div>
+          <div>
+            <div class="t">Tell the truth</div>
+            <div class="d">and they declare on their next turn, score, and win. You handed them the match.</div>
+          </div>
+        </div>
+        <div class="tension-row">
+          <div class="g">🜂</div>
+          <div>
+            <div class="t">Lie</div>
+            <div class="d">and if they declare wrong they must name whoever misled them. You go out with them.</div>
+          </div>
+        </div>
+        <div class="tension-row">
+          <div class="g">🜃</div>
+          <div>
+            <div class="t">Say nothing</div>
+            <div class="d">and the round dies at the pile, worth zero, and nobody wins anything. So nobody stays quiet.</div>
+          </div>
+        </div>
+      </div>
+      <p class="muted">
+        That triangle is the whole game. Everything players invent to escape it — trading answers,
+        cross-checking two askers, deliberate vagueness, silence as leverage — is the actual play.
+      </p>
+    </div>
+
+    <!-- slide 4 -->
+    <div class="slide" data-slide="3">
+      <div class="kicker">Winning</div>
+      <h2>Declare right and take the points.</h2>
+      <p>
+        Each role is worth its number, 1 through 8. Declare correctly and you score it.
+        First to <b>5 points</b> takes the match.
+      </p>
+      <p>
+        Declare <b>wrong</b> and you are out — and you must name the player whose answer you relied on.
+        <b>They go out with you.</b> If you worked it out yourself, only you go out.
+      </p>
+      <p class="muted">
+        An eliminated player still gets a WITNESS card: one public accusation, true or false,
+        that nobody can punish them for. Leaving the table does not mean leaving the game.
+      </p>
+    </div>
+
+    <!-- slide 5 -->
+    <div class="slide" data-slide="4">
+      <div class="kicker">The part that makes it a game</div>
+      <h2>You can see most of the deck. Not all of it.</h2>
+      <p>
+        Twelve cards, four players. You can read three of them, so your own card is one of
+        the other nine — and eight of those are face-down in the middle where nobody can see them.
+      </p>
+      <div class="panel" style="margin:18px 0">
+        <div class="kicker" style="margin-bottom:9px">What you could deduce right now</div>
+        <div class="chips">
+          <span class="chip">Fool <b>×2</b></span>
+          <span class="chip">Guard <b>×2</b></span>
+          <span class="chip">Widow <b>×1</b></span>
+          <span class="chip">Monk <b>×2</b></span>
+          <span class="chip">Oracle <b>×1</b></span>
+          <span class="chip">Judge <b>×1</b></span>
+          <span class="chip">Prince <b>×1</b></span>
+          <span class="chip">Queen <b>×1</b></span>
+        </div>
+      </div>
+      <p>
+        Ask someone. Burn a swap. Watch what other people are told and what they do about it.
+        The pile shrinks. Late in a round the set becomes small enough to solve, and that is when
+        the lying gets serious.
+      </p>
+    </div>
+
+    <div class="dots">
+      <span class="dot on"></span><span class="dot"></span><span class="dot"></span>
+      <span class="dot"></span><span class="dot"></span>
+    </div>
+
+    <div class="btn-row" style="justify-content:space-between">
+      <button class="btn ghost sm" id="slide-back">← back</button>
+      <button class="btn primary" id="slide-next">Next</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     3 · MENU
+     ═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="menu">
+  <div class="wrap">
+    <button class="back-link" data-go="hero">← back</button>
+    <h2 style="margin-top:14px">Play with friends</h2>
+    <p class="muted">
+      Everyone opens this page. One person creates a room and reads out a four-word code.
+      No account, no install.
+    </p>
+
+    <div class="panel" style="margin:22px 0">
+      <div class="field">
+        <label for="name-input">Your name</label>
+        <input id="name-input" class="input" maxlength="16" placeholder="Ada" autocomplete="nickname">
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label for="code-input">Room code — only if you are joining</label>
+        <input id="code-input" class="input code" maxlength="12" placeholder="MOTH-K7QP" autocomplete="off" autocapitalize="characters">
+      </div>
+    </div>
+
+    <div class="btn-col">
+      <button class="btn primary wide" id="btn-create">Create a room</button>
+      <button class="btn wide" id="btn-join">Join with a code</button>
+    </div>
+
+    <div style="margin-top:26px">
+      <div class="kicker" style="margin-bottom:10px">Not ready to play with people?</div>
+      <button class="btn ghost wide" data-go="practice">Practice against three bots</button>
+    </div>
+
+    <div class="status-line" id="menu-status" style="margin-top:18px"></div>
+
+    <div class="panel" style="margin-top:26px;font-size:13px">
+      <div class="kicker" style="margin-bottom:8px">How the room works</div>
+      <p style="margin:0;font-size:13px">
+        The room is a private, encrypted channel on a public relay — the code is the key,
+        so nobody who does not have it can read a thing. There is no server of ours in the
+        middle and nothing to sign up for.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     4 · WAITING ROOM
+     ═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="lobby">
+  <div class="wrap">
+    <div class="kicker" id="lobby-kicker">Waiting room</div>
+    <h2 style="margin:6px 0 16px" id="lobby-head">Waiting for players</h2>
+
+    <div class="code-display" id="lobby-code">····</div>
+    <p class="muted center" style="font-size:13px;margin:10px 0 0">
+      Read this out. Anyone who types it lands at your table.
+    </p>
+
+    <div class="seats" id="lobby-seats"></div>
+
+    <div class="btn-col">
+      <button class="btn primary wide" id="btn-start" disabled>Deal — need 3 players</button>
+      <div class="btn-row">
+        <button class="btn ghost sm" id="btn-copy">Copy code</button>
+        <button class="btn ghost sm" id="btn-share">Share link</button>
+        <button class="btn ghost sm" id="btn-fill">Add a bot</button>
+      </div>
+    </div>
+
+    <div class="status-line" id="lobby-status" style="margin-top:16px"></div>
+    <button class="back-link" id="btn-leave" style="margin-top:10px">← leave room</button>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     5 · THE TABLE
+     ═══════════════════════════════════════════════════════════ -->
+<section class="screen" id="table-screen">
+  <div id="gl"></div>
+
+  <div class="hud">
+    <div class="hud-top">
+      <div class="hud-round">Round <b id="hud-round">1</b> · <span id="hud-circuit">circuit 1</span></div>
+      <div class="hud-scores" id="hud-scores"></div>
+      <button class="btn ghost sm" id="btn-sound" title="Sound on or off">♪</button>
+      <button class="btn ghost sm" id="btn-help" title="Rules">?</button>
+    </div>
+
+    <div></div>
+
+    <div class="hud-bottom">
+      <div class="prompt" id="hud-prompt">…</div>
+      <div class="actions" id="hud-actions"></div>
+    </div>
+  </div>
+
+  <button class="deduce-toggle" id="deduce-toggle">? What you know</button>
+  <div class="deduce hidden" id="deduce"></div>
+  <div class="log" id="log"></div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODALS
+     ═══════════════════════════════════════════════════════════ -->
+
+<div class="modal sheet" id="modal-answer">
+  <div class="modal-in">
+    <div class="kicker">You have been asked</div>
+    <h2 id="answer-question">What are you?</h2>
+    <p>You can see their card — they cannot see it at all. Name it truthfully, or lie about it.</p>
+    <div class="role-grid" id="answer-roles"></div>
+    <p class="muted" style="font-size:13px;margin:0">
+      Telling the truth costs you the game outright. Lying risks a citation if they declare wrong.
+    </p>
+  </div>
+</div>
+
+<div class="modal sheet" id="modal-declare">
+  <div class="modal-in">
+    <div class="kicker">Declare</div>
+    <h2>What are you?</h2>
+    <p>Correct and you score its value. Wrong and you are out — and so is whoever misled you.</p>
+    <div class="role-grid" id="declare-roles"></div>
+    <button class="btn ghost wide" id="declare-cancel">Not yet</button>
+  </div>
+</div>
+
+<div class="modal sheet" id="modal-cite">
+  <div class="modal-in">
+    <div class="kicker">That was wrong</div>
+    <h2>Who misled you?</h2>
+    <p>
+      You are out. Name the player whose answer you relied on and they go out with you.
+      If you worked it out alone, say so — but then you carry it alone.
+    </p>
+    <div class="btn-col" id="cite-list"></div>
+    <button class="btn ghost wide" id="cite-nobody" style="margin-top:10px">Nobody — I worked it out myself</button>
+  </div>
+</div>
+
+<div class="modal sheet" id="modal-simul">
+  <div class="modal-in">
+    <div class="kicker">A full circuit, no declaration</div>
+    <h2>Everyone declares at once.</h2>
+    <p>
+      The table went all the way round without anyone committing. Point at a role.
+      Everyone's answers open together.
+    </p>
+    <div class="role-grid" id="simul-roles"></div>
+    <div class="status-line" id="simul-status"></div>
+  </div>
+</div>
+
+<div class="modal" id="modal-round">
+  <div class="modal-in">
+    <div class="kicker" id="round-kicker">Round over</div>
+    <h2 id="round-head">—</h2>
+    <p id="round-sub">—</p>
+    <div class="reveal-grid" id="round-reveal"></div>
+    <div id="round-scores"></div>
+    <div class="stats-line" id="round-stats"></div>
+    <div class="btn-col" style="margin-top:18px">
+      <button class="btn primary wide" id="round-next">Deal the next round</button>
+      <button class="btn ghost wide" id="round-quit">Leave the table</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-rules">
+  <div class="modal-in">
+    <div class="kicker">Rules</div>
+    <h2>What Am I?</h2>
+    <p><b>Setup.</b> Everyone gets one card, face-out — readable by the whole table except its owner.
+    Four cards go face-down in a central pile. Two swap tokens each.</p>
+    <p class="muted" style="font-size:13px">Because the pile is only four cards, your own face is
+    always one of five you cannot see. That is what makes asking worth doing: two honest answers
+    usually pin it down to one.</p>
+    <ul class="rules-list">
+      <li><b>Ask</b> — name a player and ask what you are. They answer with a role name, and they may lie.</li>
+      <li><b>Swap</b> — spend a token. Your card goes to the bottom of the pile, you take the top one face-out.
+      The table knows your new identity. You do not.</li>
+      <li><b>Declare</b> — name your own role. Right: score its value. Wrong: you are out, and you name
+      whoever misled you — <b>they go out too</b>.</li>
+    </ul>
+    <p><b>Telling the truth pays.</b> Every player who answered you honestly — and whose answer you
+    then acted on — scores a point when you declare correctly. So honesty is a strategy, not a
+    sacrifice, and the liar is the one taking the risk.</p>
+    <p><b>Ending.</b> The round ends when someone declares correctly. It takes <b>two</b> full circuits
+    of silence before the table gives up and declares simultaneously — the first lap is for asking,
+    the second is for acting on what you learned.</p>
+    <p><b>Match.</b> First to 8 points.</p>
+    <p class="muted" style="font-size:13px">
+      Tell the truth and you both gain. Lie to the player about to win, and hope nobody checks.
+    </p>
+    <button class="btn wide" id="rules-close" style="margin-top:16px">Close</button>
+  </div>
+</div>
+
+<div class="modal" id="modal-fatal">
+  <div class="modal-in">
+    <div class="kicker">Connection</div>
+    <h2 id="fatal-head">Lost the room</h2>
+    <p id="fatal-sub">—</p>
+    <button class="btn primary wide" id="fatal-ok" style="margin-top:14px">Back to the menu</button>
+  </div>
+</div>
+
+<div class="deal-veil" id="deal-veil">
+  <div class="deal-card">
+    <div class="kicker" id="deal-kicker">The deal</div>
+    <h2>This round's deck</h2>
+    <p id="deal-sub">—</p>
+    <div class="deck-manifest" id="deal-manifest"></div>
+    <p class="deal-note">
+      Everyone sees exactly this. Count what is already on other people's faces —
+      whatever is left over is what your own card can be.
+    </p>
+    <button class="btn primary wide" id="deal-go">Shuffle and deal</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div id="crash" style="display:none;position:fixed;inset:auto 0 0 0;z-index:99;
+     background:#2a1512;border-top:2px solid #8a3020;color:#f0dcd8;
+     padding:14px 18px;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;
+     max-height:44vh;overflow:auto">
+  <b id="crash-head">Something broke.</b>
+  <pre id="crash-body" style="margin:8px 0 0;white-space:pre-wrap;word-break:break-word"></pre>
+</div>
+
+<script>
+/* If a module throws while wiring itself up, every button on the page
+   silently does nothing, which is the least debuggable failure there is.
+   Say so instead. */
+(function () {
+  var shown = false;
+  function report(what, detail) {
+    if (shown) return;
+    shown = true;
+    var box = document.getElementById('crash');
+    if (!box) return;
+    document.getElementById('crash-head').textContent = what;
+    document.getElementById('crash-body').textContent = detail;
+    box.style.display = 'block';
+  }
+  window.addEventListener('error', function (e) {
+    report('Script error', (e.message || 'unknown') +
+      (e.filename ? '\n  at ' + e.filename + ':' + e.lineno + ':' + e.colno : ''));
+  });
+  window.addEventListener('unhandledrejection', function (e) {
+    report('Unhandled promise rejection', String(e.reason && e.reason.stack || e.reason));
+  });
+  /* WebGL can fail on old or headless machines. That must not read as
+     "the game is broken" — it means the 3D table cannot be drawn. */
+  window.__wamiReport = report;
+})();
+</script>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

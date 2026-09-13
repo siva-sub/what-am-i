@@ -1,0 +1,14 @@
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Nothing generated lives here — the site is hand-written and vendored,
+# so a build artifact appearing in a diff means something went wrong.
+dist/
+node_modules/

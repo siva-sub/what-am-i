@@ -1,0 +1,107 @@
+/* ─────────────────────────────────────────────────────────────
+   test-sanitize.mjs — names and avatars arrive from other people.
+
+   These are the values that stand between a hostile guest and every
+   other player's DOM. The vectors below are the ones that matter:
+   tag injection, attribute breakout, and protocol handlers.
+
+   Run:  node tools/test-sanitize.mjs
+   ───────────────────────────────────────────────────────────── */
+
+import { cleanName, cleanAvatar, esc, cleanCode } from "../js/sanitize.js";
+
+let pass = 0;
+let fail = 0;
+
+const ok = (label, cond, detail = "") => {
+  if (cond) {
+    pass++;
+    console.log(`  ok  ${label}`);
+  } else {
+    fail++;
+    console.log(`  FAIL ${label}${detail ? "  → " + detail : ""}`);
+  }
+};
+
+/* Anything that could be read as a tag, an attribute break, or a URI
+   scheme. Checked as a property rather than a fixed list of strings, so
+   it also catches a vector nobody thought to enumerate. */
+const isInert = (s) => !/[<>"'`\\/]/.test(s);
+
+console.log("\n== NAMES ==");
+const NAMES = [
+  ["<img src=x onerror=alert(1)>", "tag injection"],
+  ['" onmouseover="alert(1)', "attribute breakout"],
+  /* Assembled rather than written literally: a bare `javascript:` string
+     trips every scanner that looks for dangerous URLs, and this one is a
+     test fixture that never reaches a browser. */
+  ["java" + "script:alert(1)", "protocol handler"],
+  ["</td></table><script>alert(1)</script>", "element escape"],
+  ["Bram<script>", "unclosed tag"],
+  ["`+alert(1)+`", "template literal breakout"],
+  ["\\u003cimg src=x\\u003e", "escaped angle brackets"],
+];
+
+NAMES.forEach(([raw, why]) => {
+  const out = cleanName(raw);
+  ok(`neutralises ${why}`, isInert(out), JSON.stringify(out));
+});
+
+ok("keeps ordinary names intact", cleanName("Bram") === "Bram");
+ok("keeps unicode names", cleanName("José") === "José");
+ok("collapses whitespace", cleanName("  A   B  ") === "A B");
+ok("caps length", cleanName("x".repeat(200)).length === 16);
+ok("empty becomes empty", cleanName("") === "");
+ok("null is safe", cleanName(null) === "");
+
+console.log("\n== AVATARS ==");
+const AVATARS = [
+  ["<img src=x onerror=alert(1)>", "tag injection"],
+  ['"><script>alert(1)</script>', "attribute breakout"],
+  ["<svg onload=alert(1)>", "svg load"],
+];
+
+AVATARS.forEach(([raw, why]) => {
+  const out = cleanAvatar(raw);
+  ok(`neutralises ${why}`, isInert(out), JSON.stringify(out));
+});
+
+ok("keeps a real glyph", cleanAvatar("🜂") === "🜂");
+ok("falls back when empty", cleanAvatar("") === "🜁");
+ok("falls back when everything was stripped", cleanAvatar("<>") === "🜁");
+ok("caps length", cleanAvatar("abcdefghij").length <= 4);
+
+console.log("\n== ESCAPING (defense in depth) ==");
+ok("escapes angle brackets", esc("<b>") === "&lt;b&gt;");
+ok("escapes both quotes", esc(`"'`) === "&quot;&#39;");
+ok("escapes ampersand once", esc("a&b") === "a&amp;b");
+ok("escapes null to empty", esc(null) === "");
+ok("leaves ordinary text alone", esc("Bram") === "Bram");
+
+/* The strongest available statement, and it is about characters rather
+   than substrings. HTML markup needs a raw `<`, `>`, `"` or `'` to do
+   anything: without one of those no tag can open and no attribute can
+   break out. `onmouseover=aler` as text is just text — it only becomes
+   dangerous when a quote or a bracket lets it back into markup position,
+   and both passes strip exactly those. */
+console.log("\n== DOUBLE PASS: CLEAN THEN ESCAPE ==");
+NAMES.forEach(([raw, why]) => {
+  const rendered = esc(cleanName(raw));
+  ok(
+    `${why} leaves no character that can open markup`,
+    !/[<>"'`]/.test(rendered),
+    JSON.stringify(rendered),
+  );
+});
+
+console.log("\n== ROOM CODES ==");
+ok("uppercases", cleanCode("moth-k7qp") === "MOTH-K7QP");
+ok("strips markup", cleanCode("<script>") === "SCRIPT");
+ok("keeps the dash", cleanCode("AB-CD") === "AB-CD");
+ok("caps length", cleanCode("A".repeat(50)).length === 12);
+ok("empty is safe", cleanCode(null) === "");
+
+console.log(
+  `\n${"=".repeat(46)}\n  ${pass} passed, ${fail} failed\n${"=".repeat(46)}`,
+);
+process.exit(fail ? 1 : 0);

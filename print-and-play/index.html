@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WHAT AM I? · Print &amp; Play</title>
+<style>
+/* ────────────────────────────────────────────────────────────────
+   WHAT AM I?  ·  print & play
+   Open in Chrome → Cmd/Ctrl+P → A4 · Margins: None · Scale: 100%
+   Colour: ON · Background graphics: ON
+   ──────────────────────────────────────────────────────────────── */
+
+:root{
+  --ink:#1a1613;
+  --paper:#f3ece0;
+  --cream:#efe6d6;
+  --card-w:60mm;
+  --card-h:90mm;
+}
+
+@page{ size:A4 portrait; margin:0; }
+
+*{ box-sizing:border-box; }
+
+html,body{
+  margin:0; padding:0;
+  background:#4a4a4a;
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--ink);
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* ── screen-only banner ─────────────────────────────────────── */
+.screen-note{
+  background:#111; color:#eee; padding:14px 20px;
+  font:13px/1.6 ui-monospace,Menlo,monospace;
+  border-bottom:2px solid #000;
+}
+.screen-note b{ color:#ffd479; }
+@media print{ .screen-note{ display:none !important; } }
+
+/* ── a sheet of paper ──────────────────────────────────────── */
+.sheet{
+  width:210mm; height:297mm;
+  background:#fff;
+  margin:10mm auto;
+  position:relative;
+  overflow:hidden;
+  page-break-after:always;
+  break-after:page;
+  box-shadow:0 3px 20px rgba(0,0,0,.5);
+}
+.sheet:last-child{ page-break-after:auto; break-after:auto; }
+@media print{ .sheet{ margin:0; box-shadow:none; } }
+
+.sheet-label{
+  position:absolute; left:15mm; top:7mm;
+  font:9px/1 ui-monospace,monospace; letter-spacing:.18em;
+  text-transform:uppercase; color:#8a8378;
+}
+
+/* ── card grid ─────────────────────────────────────────────── */
+.grid{
+  position:absolute; left:15mm; top:13.5mm;
+  display:grid;
+  grid-template-columns:repeat(3,var(--card-w));
+  grid-template-rows:repeat(3,var(--card-h));
+}
+.grid.two{ grid-template-rows:repeat(2,var(--card-h)); }
+
+.card{
+  width:var(--card-w); height:var(--card-h);
+  position:relative; overflow:hidden;
+  background:var(--cream);
+  outline:.2mm solid #b9ae9a;      /* cut guide */
+  outline-offset:-0.1mm;
+}
+/*
+   Every face is scaled to 95.5% and centred, which leaves a uniform ~2mm
+   cream reveal inside the cut line. This is not decorative: the QUEEN art
+   has her train running to the very bottom edge of the file, so without the
+   reveal the guillotine would slice her. It also normalises margins across
+   the set, because the generated art does not share one margin convention.
+   Scaling keeps the 2:3 ratio exact, so nothing is distorted or cropped.
+*/
+.card img{
+  display:block; width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  transform:scale(.955);
+  transform-origin:center;
+}
+
+/* corner ticks make the guillotine lines legible */
+.card::before,.card::after{
+  content:""; position:absolute; width:4mm; height:.2mm;
+  background:#b9ae9a; pointer-events:none;
+}
+.card::before{ top:0; left:0; }
+.card::after{ bottom:0; right:0; }
+
+/* ── token sheet ───────────────────────────────────────────── */
+.tokens{
+  position:absolute; left:15mm; top:20mm;
+  display:grid;
+  grid-template-columns:repeat(5,36mm);
+  grid-template-rows:repeat(2,36mm);
+}
+.token{
+  width:36mm; height:36mm;
+  outline:.2mm solid #b9ae9a; outline-offset:-0.1mm;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  background:var(--cream); text-align:center;
+}
+.token .glyph{
+  font-size:15mm; line-height:1; font-weight:700;
+  margin-bottom:1.5mm;
+}
+.token .t1{ font-size:8.5pt; letter-spacing:.14em; font-weight:700; }
+.token .t2{ font-size:6.5pt; letter-spacing:.1em; color:#6d6459; font-style:italic; }
+.token .t3{ font-size:8.5pt; letter-spacing:.14em; font-weight:700; }
+
+/* ── text sheets ───────────────────────────────────────────── */
+.panel{
+  position:absolute;
+  border:.35mm solid var(--ink);
+  background:#fff;
+  padding:7mm 8mm;
+  font-size:9pt; line-height:1.5;
+}
+.panel h1{
+  margin:0 0 4mm; font-size:16pt; letter-spacing:.2em;
+  text-transform:uppercase; border-bottom:.35mm solid var(--ink);
+  padding-bottom:3mm;
+}
+.panel h2{
+  margin:5mm 0 1.5mm; font-size:8pt; letter-spacing:.22em;
+  text-transform:uppercase; color:#6d6459;
+  border-bottom:.2mm solid #c9bfae; padding-bottom:1mm;
+}
+.panel p{ margin:0 0 2mm; }
+.panel .lead{ font-style:italic; color:#3a332c; }
+.panel ul{ margin:0; padding-left:5mm; }
+.panel li{ margin-bottom:1.2mm; }
+.rule-hd{ font-weight:700; letter-spacing:.08em; }
+
+/* player aid 2×2 */
+.aids{
+  position:absolute; left:15mm; top:13.5mm;
+  display:grid; grid-template-columns:90mm 90mm; grid-template-rows:135mm 135mm;
+  gap:0;
+}
+.aid{
+  border:.35mm dashed #b9ae9a; padding:6mm 6.5mm;
+  font-size:8pt; line-height:1.45; position:relative;
+}
+.aid h1{
+  margin:0 0 3mm; font-size:11pt; letter-spacing:.16em;
+  text-transform:uppercase; border-bottom:.4mm solid var(--ink);
+  padding-bottom:2mm;
+}
+.aid h2{
+  margin:3.5mm 0 1mm; font-size:7pt; letter-spacing:.2em;
+  text-transform:uppercase; color:#6d6459;
+  border-bottom:.2mm solid #d5cbbb; padding-bottom:.8mm;
+}
+.aid .big{
+  font-size:7.6pt; font-weight:700; letter-spacing:.02em;
+  background:#f0e8da; padding:2mm 2.5mm; border-left:1.2mm solid var(--ink);
+  margin-bottom:3mm;
+}
+.aid dl{ margin:0; }
+.aid dt{
+  font-weight:700; letter-spacing:.12em; font-size:7.4pt;
+  float:left; clear:left; width:19mm; margin-top:1.2mm;
+}
+.aid dd{ margin:0 0 1.2mm 20mm; }
+.aid ul{ margin:0; padding-left:4mm; }
+.aid li{ margin-bottom:1mm; }
+
+/* role reference */
+.roleref{
+  position:absolute; left:22mm; top:60mm; width:166mm;
+  border:.4mm solid var(--ink); padding:8mm;
+}
+.roleref .rr-title{
+  text-align:center; font-size:13pt; letter-spacing:.3em;
+  text-transform:uppercase; border-bottom:.4mm solid var(--ink);
+  padding-bottom:4mm; margin-bottom:6mm;
+}
+.rr-row{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:4mm;
+  margin-bottom:6mm;
+}
+.rr{
+  border:.3mm solid var(--ink); text-align:center; padding:3.5mm 2mm;
+  background:var(--cream);
+}
+.rr .n{ font-size:13pt; font-weight:700; line-height:1; }
+.rr .nm{ font-size:10pt; letter-spacing:.18em; margin:1.5mm 0 1mm; }
+.rr .ct{ font-size:7pt; letter-spacing:.14em; color:#6d6459; }
+.rr .pt{ font-size:8.5pt; font-weight:700; margin-top:1.5mm; }
+.rr-foot{
+  border-top:.4mm solid var(--ink); padding-top:4mm; text-align:center;
+  font-size:8pt; line-height:1.7;
+}
+.rr-foot .kicker{ font-style:italic; color:#3a332c; }
+
+/* scorepad */
+.pad{ position:absolute; left:15mm; top:20mm; width:180mm; }
+.pad h1{
+  font-size:14pt; letter-spacing:.22em; text-transform:uppercase;
+  margin:0 0 1mm;
+}
+.pad .sub{
+  font:8pt/1.4 ui-monospace,monospace; letter-spacing:.1em;
+  color:#6d6459; margin-bottom:5mm;
+}
+table{ width:100%; border-collapse:collapse; }
+th,td{
+  border:.3mm solid var(--ink); height:9mm;
+  font-size:7.5pt; letter-spacing:.08em; text-align:center;
+  padding:0 1mm;
+}
+th{ background:var(--cream); font-weight:700; height:7mm; }
+td.name{ text-align:left; width:38mm; padding-left:2.5mm; }
+.pad h2{
+  font-size:7.5pt; letter-spacing:.2em; text-transform:uppercase;
+  margin:7mm 0 2mm; color:#6d6459;
+}
+
+/* ── ability cards ─────────────────────────────────────────── */
+.card.ability{
+  background:var(--cream);
+  padding:5mm 4.5mm;
+  display:flex; flex-direction:column; justify-content:space-between;
+  text-align:center; position:relative;
+}
+.card.ability .ab-num{
+  position:absolute; top:3mm; left:4mm;
+  font-size:14pt; font-weight:700; line-height:1;
+}
+.card.ability .ab-star{
+  position:absolute; top:2.5mm; right:4mm;
+  font-size:14pt; font-weight:700; color:#8a3020;
+}
+.card.ability .ab-role{
+  margin-top:2mm;
+  font-size:11pt; letter-spacing:.22em; text-transform:uppercase;
+  font-weight:700; border-bottom:.35mm solid var(--ink);
+  padding-bottom:1.5mm;
+}
+.card.ability .ab-title{
+  font-size:7pt; letter-spacing:.14em; text-transform:uppercase;
+  color:#6d6459; font-style:italic; margin-top:2mm;
+}
+.card.ability .ab-body{
+  font-size:7.5pt; line-height:1.45; text-align:left;
+  margin:auto 0; padding:2.5mm 0;
+  border-top:.2mm dashed #b9ae9a;
+  border-bottom:.2mm dashed #b9ae9a;
+}
+.card.ability .ab-body b{ color:#111; }
+.card.ability .ab-foot{
+  font-size:6.5pt; letter-spacing:.12em; text-transform:uppercase;
+  color:#6d6459; font-weight:700;
+}
+
+/* ── witness card ──────────────────────────────────────────── */
+.card.witness{
+  background:#1a1613; color:#efe6d6;
+  padding:5mm 4.5mm;
+  display:flex; flex-direction:column; justify-content:space-between;
+  text-align:center; position:relative;
+}
+.card.witness .wit-head{
+  font-size:11pt; letter-spacing:.24em; text-transform:uppercase;
+  border-bottom:.3mm solid #efe6d6; padding-bottom:1.5mm;
+}
+.card.witness .wit-sub{
+  font-size:6.5pt; letter-spacing:.16em; text-transform:uppercase;
+  color:#c9bfae; margin-top:1.5mm; font-style:italic;
+}
+.card.witness .wit-body{
+  font-size:7.5pt; line-height:1.45; text-align:left;
+  margin:auto 0; padding:2.5mm 0; border-top:.2mm solid #555;
+  border-bottom:.2mm solid #555; color:#f3ece0;
+}
+.card.witness .wit-body b{ color:#fff; }
+.card.witness .wit-foot{
+  font-size:6.5pt; letter-spacing:.12em; text-transform:uppercase;
+  color:#c9bfae;
+}
+
+/* ── tuck box net ──────────────────────────────────────────── */
+.net{
+  position:absolute; left:23mm; top:30mm;
+  display:grid;
+  grid-template-columns:20mm 62mm 20mm 62mm;
+  grid-template-rows:20mm 92mm 20mm;
+}
+.net > div{
+  outline:.3mm solid var(--ink); outline-offset:-.15mm;
+  position:relative; background:#fff; overflow:hidden;
+}
+.net .lbl{
+  position:absolute; inset:0; display:flex;
+  align-items:center; justify-content:center;
+  font-size:6.5pt; letter-spacing:.18em; text-transform:uppercase;
+  color:#6d6459;
+}
+.net .box-top{
+  background:var(--cream); display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  font-size:8pt; letter-spacing:.24em; text-transform:uppercase;
+  font-weight:700;
+}
+.net .box-top .sub{ font-size:5pt; letter-spacing:.15em; color:#6d6459; margin-top:.5mm; }
+.net .face-cover img, .net .face-back img{
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.net-note{
+  position:absolute; left:23mm; top:250mm; width:164mm;
+  font-size:8pt; line-height:1.55;
+}
+.net-note b{ letter-spacing:.1em; }
+
+/* side notes on card sheets */
+.sheet-note{
+  position:absolute; left:15mm; bottom:5mm; width:180mm;
+  font:8px/1.5 ui-monospace,monospace; color:#9a9082;
+}
+</style>
+</head>
+<body>
+
+<div class="screen-note">
+<b>WHAT AM I? · print &amp; play</b> — 16 card faces + cover + back + 8 ability cards + 4 witness cards + tokens + aids.<br>
+Print at <b>A4</b>, margins <b>None</b>, scale <b>100%</b>, background graphics <b>ON</b>.
+Sheets 1–2 are the card fronts, 3–4 are the backs (duplex, flip on the long edge). Sheet 10 = ✱ Ability cards, 11 = backs.
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 1 · CARD FRONTS  1–9
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 1 of 12 · cards 1–9 (fronts)</div>
+  <div class="grid">
+    <div class="card"><img src="art/print/fool-a.png"   alt="Fool"></div>
+    <div class="card"><img src="art/print/fool-b.png"   alt="Fool"></div>
+    <div class="card"><img src="art/print/guard-a.png"  alt="Guard"></div>
+
+    <div class="card"><img src="art/print/guard-b.png"  alt="Guard"></div>
+    <div class="card"><img src="art/print/widow-a.png"  alt="Widow"></div>
+    <div class="card"><img src="art/print/widow-b.png"  alt="Widow"></div>
+
+    <div class="card"><img src="art/print/monk-a.png"   alt="Monk"></div>
+    <div class="card"><img src="art/print/monk-b.png"   alt="Monk"></div>
+    <div class="card"><img src="art/print/oracle-a.png" alt="Oracle"></div>
+  </div>
+  <div class="sheet-note">CORE DECK · cut on the thin grey rules · 12 cards total</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 2 · CARD FRONTS 10–16
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 2 of 12 · cards 10–16 (fronts + expansion)</div>
+  <div class="grid">
+    <div class="card"><img src="art/print/judge-a.png"  alt="Judge"></div>
+    <div class="card"><img src="art/print/prince.png"   alt="Prince"></div>
+    <div class="card"><img src="art/print/queen.png"    alt="Queen"></div>
+
+    <div class="card"><img src="art/print/fool-c.png"   alt="Fool · expansion"></div>
+    <div class="card"><img src="art/print/guard-c.png"  alt="Guard · expansion"></div>
+    <div class="card"><img src="art/print/oracle-b.png" alt="Oracle · expansion"></div>
+
+    <div class="card"><img src="art/print/judge-b.png"  alt="Judge · expansion"></div>
+    <div class="card" style="outline:none"></div>
+    <div class="card" style="outline:none"></div>
+  </div>
+  <div class="sheet-note">TOP ROW = last 3 core cards (JUDGE · PRINCE · QUEEN) · ROW 2 = EXPANSION, use only at 6–8 players</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 3 · CARD BACKS (mirrored column order)
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 3 of 12 · backs for sheet 1 — flip on long edge</div>
+  <div class="grid">
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+  </div>
+  <div class="sheet-note">Columns are reversed on purpose — this is what makes the duplex flip land on the right face.</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 4 · CARD BACKS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 4 of 12 · backs for sheet 2 — flip on long edge</div>
+  <div class="grid">
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card" style="outline:none"></div>
+    <div class="card" style="outline:none"></div>
+  </div>
+  <div class="sheet-note">7 backs on this sheet · the two blank cells are the spare cells on sheet 2.</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 5 · TOKENS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 5 of 12 · tokens · 10 per sheet · print 1</div>
+  <div class="tokens">
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+    <div class="token"><div class="glyph">&#8634;</div><div class="t1">SWAP</div><div class="t2">or</div><div class="t3">CLEAR MARK</div></div>
+  </div>
+  <div class="sheet-note">Give every player 2 tokens. The 2 spare tokens sit in the middle as the replaceable pool.</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 6 · PLAYER AIDS × 4
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 6 of 12 · player aid · cut into 4</div>
+  <div class="aids">
+
+    <div class="aid">
+      <h1>What Am I?</h1>
+      <div class="big">Your card is face-out. You may not read it. Nobody may tell you. Nobody may confirm.</div>
+      <h2>Your turn — pick one</h2>
+      <dl>
+        <dt>Ask</dt><dd>Whisper to <i>one</i> player: “what am I?” The answer is private.<br>Refusing is legal — and a tell.</dd>
+        <dt>Declare</dt><dd>Say your role out loud. The table reads your card.</dd>
+        <dt>Swap</dt><dd>Spend a token, draw from the pile. New card goes face-out.</dd>
+      </dl>
+      <h2>Token — two uses</h2>
+      <ul>
+        <li>&#8634;&nbsp; Swap your card</li>
+        <li>&#8634;&nbsp; Clear your own MARK</li>
+      </ul>
+      <h2>Declaring</h2>
+      <ul>
+        <li><b>Correct</b> → score its value · round ends</li>
+        <li><b>Wrong</b> → you are OUT. Name your source; that player becomes MARKED.</li>
+        <li><b>MARKED</b> → you cannot declare</li>
+      </ul>
+      <h2>Other</h2>
+      <ul>
+        <li>No declaring in the <b>first circuit</b></li>
+        <li>Glimpse your own card → declare at once</li>
+        <li>Eliminated → <b>WITNESS</b>: once per round, publicly announce any one card, true or lie</li>
+        <li>Full circuit with no declaration → everyone declares at once</li>
+        <li>First to <b>8 points</b> wins the match</li>
+      </ul>
+    </div>
+
+    <div class="aid">
+      <h1>What Am I?</h1>
+      <div class="big">Your card is face-out. You may not read it. Nobody may tell you. Nobody may confirm.</div>
+      <h2>Your turn — pick one</h2>
+      <dl>
+        <dt>Ask</dt><dd>Whisper to <i>one</i> player: “what am I?” The answer is private.<br>Refusing is legal — and a tell.</dd>
+        <dt>Declare</dt><dd>Say your role out loud. The table reads your card.</dd>
+        <dt>Swap</dt><dd>Spend a token, draw from the pile. New card goes face-out.</dd>
+      </dl>
+      <h2>Token — two uses</h2>
+      <ul>
+        <li>&#8634;&nbsp; Swap your card</li>
+        <li>&#8634;&nbsp; Clear your own MARK</li>
+      </ul>
+      <h2>Declaring</h2>
+      <ul>
+        <li><b>Correct</b> → score its value · round ends</li>
+        <li><b>Wrong</b> → you are OUT. Name your source; that player becomes MARKED.</li>
+        <li><b>MARKED</b> → you cannot declare</li>
+      </ul>
+      <h2>Other</h2>
+      <ul>
+        <li>No declaring in the <b>first circuit</b></li>
+        <li>Glimpse your own card → declare at once</li>
+        <li>Eliminated → <b>WITNESS</b>: once per round, publicly announce any one card, true or lie</li>
+        <li>Full circuit with no declaration → everyone declares at once</li>
+        <li>First to <b>8 points</b> wins the match</li>
+      </ul>
+    </div>
+
+    <div class="aid">
+      <h1>What Am I?</h1>
+      <div class="big">Your card is face-out. You may not read it. Nobody may tell you. Nobody may confirm.</div>
+      <h2>Your turn — pick one</h2>
+      <dl>
+        <dt>Ask</dt><dd>Whisper to <i>one</i> player: “what am I?” The answer is private.<br>Refusing is legal — and a tell.</dd>
+        <dt>Declare</dt><dd>Say your role out loud. The table reads your card.</dd>
+        <dt>Swap</dt><dd>Spend a token, draw from the pile. New card goes face-out.</dd>
+      </dl>
+      <h2>Token — two uses</h2>
+      <ul>
+        <li>&#8634;&nbsp; Swap your card</li>
+        <li>&#8634;&nbsp; Clear your own MARK</li>
+      </ul>
+      <h2>Declaring</h2>
+      <ul>
+        <li><b>Correct</b> → score its value · round ends</li>
+        <li><b>Wrong</b> → you are OUT. Name your source; that player becomes MARKED.</li>
+        <li><b>MARKED</b> → you cannot declare</li>
+      </ul>
+      <h2>Other</h2>
+      <ul>
+        <li>No declaring in the <b>first circuit</b></li>
+        <li>Glimpse your own card → declare at once</li>
+        <li>Eliminated → <b>WITNESS</b>: once per round, publicly announce any one card, true or lie</li>
+        <li>Full circuit with no declaration → everyone declares at once</li>
+        <li>First to <b>8 points</b> wins the match</li>
+      </ul>
+    </div>
+
+    <div class="aid">
+      <h1>What Am I?</h1>
+      <div class="big">Your card is face-out. You may not read it. Nobody may tell you. Nobody may confirm.</div>
+      <h2>Your turn — pick one</h2>
+      <dl>
+        <dt>Ask</dt><dd>Whisper to <i>one</i> player: “what am I?” The answer is private.<br>Refusing is legal — and a tell.</dd>
+        <dt>Declare</dt><dd>Say your role out loud. The table reads your card.</dd>
+        <dt>Swap</dt><dd>Spend a token, draw from the pile. New card goes face-out.</dd>
+      </dl>
+      <h2>Token — two uses</h2>
+      <ul>
+        <li>&#8634;&nbsp; Swap your card</li>
+        <li>&#8634;&nbsp; Clear your own MARK</li>
+      </ul>
+      <h2>Declaring</h2>
+      <ul>
+        <li><b>Correct</b> → score its value · round ends</li>
+        <li><b>Wrong</b> → you are OUT. Name your source; that player becomes MARKED.</li>
+        <li><b>MARKED</b> → you cannot declare</li>
+      </ul>
+      <h2>Other</h2>
+      <ul>
+        <li>No declaring in the <b>first circuit</b></li>
+        <li>Glimpse your own card → declare at once</li>
+        <li>Eliminated → <b>WITNESS</b>: once per round, publicly announce any one card, true or lie</li>
+        <li>Full circuit with no declaration → everyone declares at once</li>
+        <li>First to <b>8 points</b> wins the match</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 7 · ROLE REFERENCE
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 7 of 12 · role reference · one per table</div>
+  <div class="roleref">
+    <div class="rr-title">Role Reference</div>
+
+    <div class="rr-row">
+      <div class="rr"><div class="n">1</div><div class="nm">FOOL</div><div class="ct">&times;2</div><div class="pt">1 pt</div></div>
+      <div class="rr"><div class="n">2</div><div class="nm">GUARD</div><div class="ct">&times;2</div><div class="pt">2 pts</div></div>
+      <div class="rr"><div class="n">3</div><div class="nm">WIDOW</div><div class="ct">&times;2</div><div class="pt">3 pts</div></div>
+      <div class="rr"><div class="n">4</div><div class="nm">MONK</div><div class="ct">&times;2</div><div class="pt">4 pts</div></div>
+    </div>
+
+    <div class="rr-row">
+      <div class="rr"><div class="n">5</div><div class="nm">ORACLE</div><div class="ct">&times;1</div><div class="pt">5 pts</div></div>
+      <div class="rr"><div class="n">6</div><div class="nm">JUDGE</div><div class="ct">&times;1</div><div class="pt">6 pts</div></div>
+      <div class="rr"><div class="n">7</div><div class="nm">PRINCE</div><div class="ct">&times;1</div><div class="pt">7 pts</div></div>
+      <div class="rr"><div class="n">8</div><div class="nm">QUEEN</div><div class="ct">&times;1</div><div class="pt">8 pts</div></div>
+    </div>
+
+    <div class="rr-foot">
+      <b>12 cards total</b> &nbsp;·&nbsp; deck value <b>46</b> &nbsp;·&nbsp; the four low cards repeat, the four high ones do not<br>
+      <span class="kicker">The Queen is never told. Winners count. Losers ask.</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 8 · SCOREPAD
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 8 of 12 · scorepad · print a few</div>
+  <div class="pad">
+    <h1>Scorepad</h1>
+    <div class="sub">FIRST TO 8 &nbsp;·&nbsp; ROUND ______ &nbsp;·&nbsp; DEALER ______ &nbsp;·&nbsp; DATE ______</div>
+
+    <table>
+      <tr>
+        <th class="name">&nbsp;PLAYER</th>
+        <th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th><th>R8</th><th>TOTAL</th>
+      </tr>
+      <tr><td class="name"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="name"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="name"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="name"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="name"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="name"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="name"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="name"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+
+    <h2>After each round, write the role that was declared</h2>
+    <table>
+      <tr><th class="name">&nbsp;ROUND</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>R5</th><th>R6</th><th>R7</th><th>R8</th><th>WHO</th></tr>
+      <tr><td class="name">declared</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="name">was it right?</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="name">marks issued</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </table>
+
+    <h2>Session notes — the only line that matters is the last one</h2>
+    <table>
+      <tr><td style="height:9mm"></td></tr>
+      <tr><td style="height:9mm"></td></tr>
+      <tr><td style="height:9mm"></td></tr>
+      <tr><td style="height:9mm">Did anyone laugh, and at what?</td></tr>
+      <tr><td style="height:9mm"></td></tr>
+    </table>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 9 · TUCK BOX NET
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 9 of 12 · tuck box · optional · heavier paper</div>
+  <div class="net">
+    <div style="outline:none; background:transparent;"></div>
+    <div class="box-top"><span>WHAT AM I?</span><span class="sub">12 CARDS · 4-5 PLAYERS</span></div>
+    <div style="outline:none; background:transparent;"></div>
+    <div style="outline:none; background:transparent;"></div>
+
+    <div><div class="lbl">GLUE TAB</div></div>
+    <div class="face-cover"><img src="art/print/cover.png" alt="What Am I? Box Front"></div>
+    <div><div class="lbl">GLUE TAB</div></div>
+    <div class="face-back"><img src="art/print/back.png" alt="Box Back"></div>
+
+    <div style="outline:none; background:transparent;"></div>
+    <div class="box-top"><span>BASE</span></div>
+    <div style="outline:none; background:transparent;"></div>
+    <div><div class="lbl" style="font-size:6pt">TUCK LID — SCORE HERE</div></div>
+  </div>
+
+  <div class="net-note">
+    <b>ASSEMBLY</b> — score every line with a dead pen before folding. Fold all creases to the same side first,
+    then glue the two tabs inward. Panel order is TOP / FRONT / BACK / BASE, with the extra right-hand panel
+    being the tuck lid that folds over the top. Interior is 62 × 92 × 22 mm — comfortably loose for 12 sleeved cards.<br><br>
+    <b>IF THE LID IS TOO FIDDLY</b>, cut the whole net apart and use the four large panels as a single wrap-around
+    band held shut with a paper clip. Same protection, no folding.
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 10 · ✱ ABILITY CARDS (8) + VARIANT RULES (1)
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 10 of 12 · ✱ ability cards (optional variant)</div>
+  <div class="grid">
+
+    <!-- 1 FOOL ✱ -->
+    <div class="card ability">
+      <div class="ab-num">1</div><div class="ab-star">&#10033;</div>
+      <div class="ab-role">FOOL</div>
+      <div class="ab-title">Second Asking</div>
+      <div class="ab-body">
+        <b>Once per round</b>, on your turn, you may whisper a <b>second question</b> to a different player before taking any other action.
+      </div>
+      <div class="ab-foot">1 POINT &nbsp;·&nbsp; ✱ ABILITY</div>
+    </div>
+
+    <!-- 2 GUARD ✱ -->
+    <div class="card ability">
+      <div class="ab-num">2</div><div class="ab-star">&#10033;</div>
+      <div class="ab-role">GUARD</div>
+      <div class="ab-title">Iron Helm</div>
+      <div class="ab-body">
+        You <b>cannot be MARKED</b>. If an eliminated player names you as their false source, you are completely unaffected.
+      </div>
+      <div class="ab-foot">2 POINTS &nbsp;·&nbsp; ✱ ABILITY</div>
+    </div>
+
+    <!-- 3 WIDOW ✱ -->
+    <div class="card ability">
+      <div class="ab-num">3</div><div class="ab-star">&#10033;</div>
+      <div class="ab-role">WIDOW</div>
+      <div class="ab-title">Veiled Glance</div>
+      <div class="ab-body">
+        <b>Once per round</b> on your turn, instead of asking, you may secretly <b>peek at one card</b> in the central face-down pile.
+      </div>
+      <div class="ab-foot">3 POINTS &nbsp;·&nbsp; ✱ ABILITY</div>
+    </div>
+
+    <!-- 4 MONK ✱ -->
+    <div class="card ability">
+      <div class="ab-num">4</div><div class="ab-star">&#10033;</div>
+      <div class="ab-role">MONK</div>
+      <div class="ab-title">Silent Vow</div>
+      <div class="ab-body">
+        You may openly <b>refuse to answer</b> an ask. You announce your refusal as a solemn vow; it does not count as a guilty tell.
+      </div>
+      <div class="ab-foot">4 POINTS &nbsp;·&nbsp; ✱ ABILITY</div>
+    </div>
+
+    <!-- 5 ORACLE ✱ -->
+    <div class="card ability">
+      <div class="ab-num">5</div><div class="ab-star">&#10033;</div>
+      <div class="ab-role">ORACLE</div>
+      <div class="ab-title">Portent</div>
+      <div class="ab-body">
+        <b>Once per round</b>, you may ask a whisper question <b>out of turn</b> immediately after another player finishes declaring.
+      </div>
+      <div class="ab-foot">5 POINTS &nbsp;·&nbsp; ✱ ABILITY</div>
+    </div>
+
+    <!-- 6 JUDGE ✱ -->
+    <div class="card ability">
+      <div class="ab-num">6</div><div class="ab-star">&#10033;</div>
+      <div class="ab-role">JUDGE</div>
+      <div class="ab-title">Inquisition</div>
+      <div class="ab-body">
+        On your turn, publicly <b>accuse one player</b> of lying. If they lied, they are <b>MARKED</b>. If they were truthful, <b>you are OUT</b>.
+      </div>
+      <div class="ab-foot">6 POINTS &nbsp;·&nbsp; ✱ ABILITY</div>
+    </div>
+
+    <!-- 7 PRINCE ✱ -->
+    <div class="card ability">
+      <div class="ab-num">7</div><div class="ab-star">&#10033;</div>
+      <div class="ab-role">PRINCE</div>
+      <div class="ab-title">Royal Claim</div>
+      <div class="ab-body">
+        If your declaration is correct, score <b>DOUBLE (14 pts)</b> and win the match instantly. If wrong, you are eliminated as normal.
+      </div>
+      <div class="ab-foot">7 POINTS &nbsp;·&nbsp; ✱ ABILITY</div>
+    </div>
+
+    <!-- 8 QUEEN ✱ -->
+    <div class="card ability">
+      <div class="ab-num">8</div><div class="ab-star">&#10033;</div>
+      <div class="ab-role">QUEEN</div>
+      <div class="ab-title">Coronation</div>
+      <div class="ab-body">
+        You may declare <b>out of turn</b> at any moment. If correct, you score 8 pts and win immediately. If wrong, you are OUT.
+      </div>
+      <div class="ab-foot">8 POINTS &nbsp;·&nbsp; ✱ ABILITY</div>
+    </div>
+
+    <!-- VARIANT RULES CARD -->
+    <div class="card ability" style="background:#f7f2ea;">
+      <div class="ab-star" style="position:static; margin-bottom:1mm;">&#10033; &#10033; &#10033;</div>
+      <div class="ab-role" style="font-size:9.5pt;">VARIANT RULES</div>
+      <div class="ab-body" style="font-size:7.2pt; line-height:1.4;">
+        <b>HOW TO PLAY ✱ ABILITIES</b><br>
+        Swap exactly <b>ONE</b> base card for its ✱ counterpart before dealing. Players can see the ✱ on the holder’s forehead. The holder may only invoke the ability if they deduce or gamble that they hold it!
+      </div>
+      <div class="ab-foot">OPTIONAL ADVANCED PLAY</div>
+    </div>
+
+  </div>
+  <div class="sheet-note">✱ VARIANT CARDS · swap exactly ONE into the deck per game to add asymmetry without breaking simplicity.</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 11 · CARD BACKS FOR SHEET 10
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 11 of 12 · backs for sheet 10 — flip on long edge</div>
+  <div class="grid">
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+    <div class="card back"><img src="art/print/back.png" alt=""></div>
+  </div>
+  <div class="sheet-note">Backs for the ✱ Ability cards. Duplex on long edge.</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHEET 12 · 4 WITNESS CARDS + ANCILLARY MARKERS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="sheet">
+  <div class="sheet-label">Sheet 12 of 12 · 4 witness cards + table markers</div>
+  <div class="grid">
+
+    <!-- WITNESS 1 -->
+    <div class="card witness">
+      <div class="wit-head">WITNESS</div>
+      <div class="wit-sub">The Dead Have No Stake</div>
+      <div class="wit-body">
+        Hand this card to an eliminated player.<br><br>
+        <b>Once before the round ends</b>, point at any living player and publicly announce their role to the entire table.<br><br>
+        You may speak the <b>absolute truth</b>, or you may <b>lie</b>. The living cannot punish you.
+      </div>
+      <div class="wit-foot">ELIMINATED PLAYER CARD</div>
+    </div>
+
+    <!-- WITNESS 2 -->
+    <div class="card witness">
+      <div class="wit-head">WITNESS</div>
+      <div class="wit-sub">The Dead Have No Stake</div>
+      <div class="wit-body">
+        Hand this card to an eliminated player.<br><br>
+        <b>Once before the round ends</b>, point at any living player and publicly announce their role to the entire table.<br><br>
+        You may speak the <b>absolute truth</b>, or you may <b>lie</b>. The living cannot punish you.
+      </div>
+      <div class="wit-foot">ELIMINATED PLAYER CARD</div>
+    </div>
+
+    <!-- WITNESS 3 -->
+    <div class="card witness">
+      <div class="wit-head">WITNESS</div>
+      <div class="wit-sub">The Dead Have No Stake</div>
+      <div class="wit-body">
+        Hand this card to an eliminated player.<br><br>
+        <b>Once before the round ends</b>, point at any living player and publicly announce their role to the entire table.<br><br>
+        You may speak the <b>absolute truth</b>, or you may <b>lie</b>. The living cannot punish you.
+      </div>
+      <div class="wit-foot">ELIMINATED PLAYER CARD</div>
+    </div>
+
+    <!-- WITNESS 4 -->
+    <div class="card witness">
+      <div class="wit-head">WITNESS</div>
+      <div class="wit-sub">The Dead Have No Stake</div>
+      <div class="wit-body">
+        Hand this card to an eliminated player.<br><br>
+        <b>Once before the round ends</b>, point at any living player and publicly announce their role to the entire table.<br><br>
+        You may speak the <b>absolute truth</b>, or you may <b>lie</b>. The living cannot punish you.
+      </div>
+      <div class="wit-foot">ELIMINATED PLAYER CARD</div>
+    </div>
+
+    <!-- FIRST SPEAKER TOKEN CARD -->
+    <div class="card ability" style="background:#efe6d6;">
+      <div class="ab-role" style="margin-top:4mm; font-size:10pt;">FIRST SPEAKER</div>
+      <div class="ab-title">Circuit 1 Sentinel</div>
+      <div class="ab-body" style="font-size:7.5pt;">
+        Place this card before the player who takes the very first turn of the round.<br><br>
+        <b>NO DECLARING</b> until the turn passes back to this player. Once Circuit 1 finishes, flip this card face-down: declarations are now open.
+      </div>
+      <div class="ab-foot">CIRCUIT MARKER</div>
+    </div>
+
+    <!-- MARKED BADGE 1 -->
+    <div class="card ability" style="background:#2a1b18; color:#f3ece0;">
+      <div class="ab-role" style="color:#f3ece0; border-color:#8a3020; margin-top:4mm;">MARKED</div>
+      <div class="ab-title" style="color:#d49b8a;">A LIAR EXPOSED</div>
+      <div class="ab-body" style="border-color:#55332c; color:#f0dcd8;">
+        Place this card in front of a player whose false whisper was exposed.<br><br>
+        <b>YOU CANNOT DECLARE</b> while this card remains.<br><br>
+        Spend <b>1 swap token</b> on your turn to discard this card and clear your mark.
+      </div>
+      <div class="ab-foot" style="color:#d49b8a;">STATUS CARD</div>
+    </div>
+
+    <!-- MARKED BADGE 2 -->
+    <div class="card ability" style="background:#2a1b18; color:#f3ece0;">
+      <div class="ab-role" style="color:#f3ece0; border-color:#8a3020; margin-top:4mm;">MARKED</div>
+      <div class="ab-title" style="color:#d49b8a;">A LIAR EXPOSED</div>
+      <div class="ab-body" style="border-color:#55332c; color:#f0dcd8;">
+        Place this card in front of a player whose false whisper was exposed.<br><br>
+        <b>YOU CANNOT DECLARE</b> while this card remains.<br><br>
+        Spend <b>1 swap token</b> on your turn to discard this card and clear your mark.
+      </div>
+      <div class="ab-foot" style="color:#d49b8a;">STATUS CARD</div>
+    </div>
+
+    <!-- MARKED BADGE 3 -->
+    <div class="card ability" style="background:#2a1b18; color:#f3ece0;">
+      <div class="ab-role" style="color:#f3ece0; border-color:#8a3020; margin-top:4mm;">MARKED</div>
+      <div class="ab-title" style="color:#d49b8a;">A LIAR EXPOSED</div>
+      <div class="ab-body" style="border-color:#55332c; color:#f0dcd8;">
+        Place this card in front of a player whose false whisper was exposed.<br><br>
+        <b>YOU CANNOT DECLARE</b> while this card remains.<br><br>
+        Spend <b>1 swap token</b> on your turn to discard this card and clear your mark.
+      </div>
+      <div class="ab-foot" style="color:#d49b8a;">STATUS CARD</div>
+    </div>
+
+    <!-- MARKED BADGE 4 -->
+    <div class="card ability" style="background:#2a1b18; color:#f3ece0;">
+      <div class="ab-role" style="color:#f3ece0; border-color:#8a3020; margin-top:4mm;">MARKED</div>
+      <div class="ab-title" style="color:#d49b8a;">A LIAR EXPOSED</div>
+      <div class="ab-body" style="border-color:#55332c; color:#f0dcd8;">
+        Place this card in front of a player whose false whisper was exposed.<br><br>
+        <b>YOU CANNOT DECLARE</b> while this card remains.<br><br>
+        Spend <b>1 swap token</b> on your turn to discard this card and clear your mark.
+      </div>
+      <div class="ab-foot" style="color:#d49b8a;">STATUS CARD</div>
+    </div>
+
+  </div>
+  <div class="sheet-note">WITNESS &amp; STATUS CARDS · give to eliminated/marked players so game state is physical on the table.</div>
+</section>
+
+</body>
+</html>
