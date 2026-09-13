@@ -2,7 +2,7 @@
 
 Everything needed to print, assemble and play. Continues from `what-am-i-full-design.md`.
 
-```
+```text
    ┌────────────────────────────────────────────────────────────────┐
    │  v1  one-pager          BROKEN  · lying was impossible         │
    │  v2  full design        PLAYABLE· whispers + marks + witness   │
@@ -22,7 +22,7 @@ Three structural fixes, plus one emergent property I did not design and do not w
 
 **The fix.** A token does two jobs now:
 
-```
+```text
                     ┌─────────────────────────┐
                     │      SWAP TOKEN         │
                     │   (2 per player)        │
@@ -40,7 +40,7 @@ Three structural fixes, plus one emergent property I did not design and do not w
 
 This fixes three things at once:
 
-```
+```text
    BEFORE (v2)                              AFTER (v3)
    ──────────────────────                   ──────────────────────
    liar gets marked                         liar gets marked
@@ -60,7 +60,7 @@ And it gives the spite-mark real teeth without making it fatal: marking the lead
 
 **The fix.** Nobody may declare until every player has had one turn.
 
-```
+```text
    CIRCUIT 1                          CIRCUIT 2
    ─────────────────────────────      ──────────────────────────
    A  ask                             A  DECLARE (now legal)
@@ -77,7 +77,7 @@ And it gives the spite-mark real teeth without making it fatal: marking the lead
 
 v2 said first to 5. With a deck average of 3.8 points per round-win, that is a two-round match and it feels like a coin flip. First to 8 is realistically three rounds, which is where the metagame starts mattering.
 
-```
+```text
    MATCH LENGTH              rounds       wall clock
    ──────────────────────────────────────────────────
    first to 5  (v2)           ~2          ~7 min
@@ -98,7 +98,7 @@ This fell out of the scoring rule and it is now my favourite thing in the design
 
 Truth-telling is unprofitable. But the **Queen is worth 8 points**, and the match is to 8. So telling a Queen-holder their identity does not merely cost you the round — **it ends the match on the spot.**
 
-```
+```text
    ┌──────────────────────────────────────────────────────────────┐
    │  "You are the Queen."                                        │
    │                                                              │
@@ -112,7 +112,7 @@ Truth-telling is unprofitable. But the **Queen is worth 8 points**, and the matc
 
 Which means the game's best card is the one nobody will talk about:
 
-```
+```text
         CARD VALUE        WILL PEOPLE TELL YOU?
    ──────────────────────────────────────────────────
         1  FOOL          often — it is almost harmless
@@ -139,7 +139,7 @@ A Queen-holder can still work it out: they see four cards, so they know their id
 
 The complete rule text. This is the version to print.
 
-```
+```text
 ╔══════════════════════════════════════════════════════════════════╗
 ║                        W H A T   A M   I ?                       ║
 ║                                                                  ║
@@ -155,7 +155,7 @@ The complete rule text. This is the version to print.
 
 **SETUP**
 
-```
+```text
    1.  Shuffle all 12 role cards.
    2.  Deal one card to each player, held FACE-OUT.
    3.  The rest go face-down in the centre as the pile.
@@ -170,7 +170,7 @@ The complete rule text. This is the version to print.
 
 **YOUR TURN — do exactly one**
 
-```
+```text
    ┌──────────────────┬──────────────────┬──────────────────┐
    │       ASK        │     DECLARE      │       SWAP       │
    ├──────────────────┼──────────────────┼──────────────────┤
@@ -190,7 +190,7 @@ The complete rule text. This is the version to print.
 
 **DECLARING**
 
-```
+```text
               ┌──────────────────────────┐
               │  "I am the Prince."      │
               └────────────┬─────────────┘
@@ -221,7 +221,7 @@ The complete rule text. This is the version to print.
 
 If a full circuit passes with nobody declaring, everyone declares simultaneously by pointing at the reference card.
 
-```
+```text
    exactly one correct  →  they score the round
    none correct         →  round goes to the pile, nobody scores
    several correct      →  highest value wins; ties score nobody
@@ -235,7 +235,7 @@ Nobody may declare until every player has taken one turn.
 
 Once per round, an eliminated player may publicly point at any player and announce what they are. They may tell the truth or lie.
 
-```
+```text
               the dead are the only players
               with nothing left to lose
                         │
@@ -258,7 +258,7 @@ If every player is marked at the same time, the round is void, redeal.
 
 ## 4. PRINT SHEET — ROLE CARDS
 
-```
+```text
    CUT ON ALL LINES  ·  or print to 2 sheets at 2.5 × 3.5 in
    ═══════════════════════════════════════════════════════════════
    ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
@@ -302,7 +302,7 @@ If every player is marked at the same time, the round is void, redeal.
 
 **CARD BACK** — print 12 of these on the reverse, or just leave the backs blank and shuffle face-down normally.
 
-```
+```text
    ┌────────────────┐
    │ ░░░░░░░░░░░░░░ │
    │ ░░░░░░░░░░░░░░ │
@@ -318,7 +318,7 @@ If every player is marked at the same time, the round is void, redeal.
 
 ## 5. PRINT SHEET — TOKENS
 
-```
+```text
    CUT ON ALL LINES  ·  10 per sheet  ·  print 1 sheet
    ═══════════════════════════════════════════════════════════════
    ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
@@ -355,7 +355,7 @@ If every player is marked at the same time, the round is void, redeal.
 
 ## 6. PLAYER AID — one per player
 
-```
+```text
    ╔══════════════════════════════════════════════════════════╗
    ║                 WHAT AM I?  ·  PLAYER AID                ║
    ╠══════════════════════════════════════════════════════════╣
@@ -408,7 +408,7 @@ If every player is marked at the same time, the round is void, redeal.
 
 Used for forced declarations and for new players.
 
-```
+```text
    ┌──────────────────────────────────────────────────────────┐
    │             R O L E   R E F E R E N C E                  │
    ├──────────────────────────────────────────────────────────┤
@@ -433,7 +433,7 @@ Used for forced declarations and for new players.
 
 ## 8. SCOREPAD
 
-```
+```text
    WHAT AM I?  ·  SCOREPAD          first to 8           round ___
    ┌────────────┬────┬────┬────┬────┬────┬────┬────┬────┬─────┐
    │  PLAYER    │ R1 │ R2 │ R3 │ R4 │ R5 │ R6 │ R7 │ R8 │ TOP │
@@ -463,7 +463,7 @@ Used for forced declarations and for new players.
 
 ## 9. TABLE SETUP — top-down
 
-```
+```text
                              ┌─────────────────┐
                              │      ALICE      │
                              │   ┌─────────┐   │
@@ -515,7 +515,7 @@ Used for forced declarations and for new players.
 
 Needed so cards stand face-out and cannot be peeked at. Fold a strip of card into a tent.
 
-```
+```text
    ── CUT ────────────────────────────────────────────────────────
    ┌───────────────────────┬───────────────────────┐
    │                       │                       │
@@ -547,7 +547,7 @@ Needed so cards stand face-out and cannot be peeked at. Fold a strip of card int
 
 ## 11. TUCK BOX — optional
 
-```
+```text
    ── NET · cut on solid lines, fold on dashed ──────────────────
    ┌────────┬──────────────────────┬────────┬─────────────┐
    │        │                      │        │             │
@@ -574,7 +574,7 @@ Needed so cards stand face-out and cannot be peeked at. Fold a strip of card int
 
 ## 12. PACKING LIST
 
-```
+```text
    ╔══════════════════════════════════════════════════════════╗
    ║  WHAT AM I?  ·  v3  ·  COMPONENTS                        ║
    ╠══════════════════════════════════════════════════════════╣
@@ -607,7 +607,7 @@ Needed so cards stand face-out and cannot be peeked at. Fold a strip of card int
 
 What a first round looks like, in order, so the first game does not stall.
 
-```
+```text
    ┌─ BEFORE YOU START ───────────────────────────────────────────┐
    │ Read the player aid aloud. Then say this sentence, exactly:   │
    │                                                              │
@@ -640,7 +640,7 @@ What a first round looks like, in order, so the first game does not stall.
 
 **Three things that will go wrong on the first play. Say these out loud when they happen.**
 
-```
+```text
    1.  Someone will ask "can I see my own card?"
        NO. This is the entire game.
 
@@ -659,7 +659,7 @@ What a first round looks like, in order, so the first game does not stall.
 
 Print one per session. Fill it in during play, not after.
 
-```
+```text
    WHAT AM I?  ·  SESSION ___    date ______    players ____
    ┌────────────────────────────────────────────────────────────┐
    │  ROUND │ DECLARED │ BY WHOM │ CORRECT? │ SECONDS │ LAUGH?  │
@@ -702,7 +702,7 @@ Print one per session. Fill it in during play, not after.
 
 ## 15. BUILD STATUS
 
-```
+```text
    ┌─────────────────────────────────────────┬─────────────────┐
    │  STAGE                                  │  STATUS         │
    ├─────────────────────────────────────────┼─────────────────┤
@@ -735,7 +735,7 @@ Print one per session. Fill it in during play, not after.
 
 Honest list. These are unresolved and only play will resolve them.
 
-```
+```text
    ┌──────────────────────────────────────────────────────────────┐
    │ 1. Is 2 tokens the right number?                             │
    │    2 lets a liar lie twice. Maybe 1 is tighter, maybe        │

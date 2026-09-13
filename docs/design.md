@@ -14,7 +14,7 @@ Seven findings. The first one kills the game, so it goes first.
 
 **Cause.** In v1, answers were spoken aloud, and every player can see every card except their own. So when Carol tells Alice "you're the Widow," five other players are looking at Alice's actual card and can correct the lie instantly, for free.
 
-```
+```text
    v1 — ANSWER SPOKEN ALOUD                    v2 — ANSWER WHISPERED
    ─────────────────────────                   ──────────────────────────
 
@@ -49,7 +49,7 @@ Seven findings. The first one kills the game, so it goes first.
 
 **Fix.** Delete the source's death. Lying now has a *profit* (a rival leaves the field) and a *cost* (you get MARKED, and being MARKED blocks you from declaring, so you cannot win the round).
 
-```
+```text
         BEFORE (v1)                          AFTER (v2)
    ┌─────────────────────┐            ┌─────────────────────┐
    │ lie → victim fails  │            │ lie → victim fails  │
@@ -72,7 +72,7 @@ Seven findings. The first one kills the game, so it goes first.
 
 **Fix.** **One action per turn.** On your turn you either ask one person, or declare, or swap. Cross-checking two players therefore costs two full circuits of the table. Meanwhile the game is running and someone else may win. Scarcity comes from *turn order*, not from a fiddly token economy — and turn order is a concept players already understand.
 
-```
+```text
    COST OF VERIFYING ONE CARD
    ──────────────────────────────────────────────
    ask player 1 ......  1 turn
@@ -90,7 +90,7 @@ Seven findings. The first one kills the game, so it goes first.
 
 **Fix.** Answers are whispered, so they cannot be recorded publicly without breaking Finding 1's fix. Instead the rule becomes **self-serving and non-arbitrary**: you name your source only because it *helps you*. Being misled is your excuse for failing.
 
-```
+```text
    ┌────────────────────────────────────────────────────┐
    │  YOU DECLARED WRONG. You are OUT regardless.       │
    │                                                    │
@@ -113,7 +113,7 @@ This is better than the original rule. The dying player's accusation is a *claim
 
 **Fix.** The **Witness rule**. An eliminated player may, once before the round ends, publicly announce one card they can see — and may lie.
 
-```
+```text
    ELIMINATED?  →  you become a WITNESS
                    ┌──────────────────────────────┐
                    │ once per round:              │
@@ -139,7 +139,7 @@ The dead have nothing to lose, so they are the only players with no reason to li
 
 **Ruling.** Recommend **4–5 players**. Six works but sags. Seven or more needs a different structure (see Variants).
 
-```
+```text
    PLAYERS   TURNS BETWEEN YOUR ACTIONS   VERDICT
    ───────────────────────────────────────────────────────
       3            2 turns                tense, fast, brutal
@@ -159,7 +159,7 @@ The dead have nothing to lose, so they are the only players with no reason to li
 
 **Why keep it at all.** It is the only escape valve from a bad card, and it lets a player deliberately reset what the table knows about them. It also gives a marked player one last route back into relevance.
 
-```
+```text
    SWAP ──► discard your card face-down to the pile
         ──► draw the top card, hold it FACE-OUT
         ──► everyone sees your new identity
@@ -178,7 +178,7 @@ The dead have nothing to lose, so they are the only players with no reason to li
 
 ## 2. THE v2 RULES
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────────┐
 │  WHAT AM I?                                                        │
 │                                                                    │
@@ -201,7 +201,7 @@ The dead have nothing to lose, so they are the only players with no reason to li
 
 ### TURN — do exactly one
 
-```
+```text
 ┌───────────────────┬───────────────────┬───────────────────┐
 │       ASK         │      DECLARE      │       SWAP        │
 ├───────────────────┼───────────────────┼───────────────────┤
@@ -217,7 +217,7 @@ The dead have nothing to lose, so they are the only players with no reason to li
 
 ### DECLARING
 
-```
+```text
                     ┌──────────────────────┐
                     │  "I AM THE PRINCE"   │
                     └──────────┬───────────┘
@@ -251,7 +251,7 @@ The dead have nothing to lose, so they are the only players with no reason to li
 
 If a **full circuit** passes with nobody declaring, everyone declares simultaneously by pointing at the role list.
 
-```
+```text
    all correct      → nobody scores, round is a draw
    one correct      → they score
    all wrong        → round goes to the pile, nobody scores
@@ -259,7 +259,7 @@ If a **full circuit** passes with nobody declaring, everyone declares simultaneo
 
 This exists so the game cannot stall. It also means stalling is a real gamble: at 5 players you can see 4 of 12 cards, so your identity is one of 8 unknowns.
 
-```
+```text
    BASELINE ODDS OF A BLIND GUESS
    ───────────────────────────────────────────────
    players   you see   unknown pool   blind hit rate
@@ -280,7 +280,7 @@ First to **5 points** wins. Points equal the value of the card you correctly dec
 
 ## 3. THE ONE MECHANIC THAT IS THE WHOLE GAME
 
-```
+```text
    WHO CAN READ WHOSE CARD          ✓ = may read      — = forbidden
 
                  Alice   Bob   Carol   Dan    Eve
@@ -302,7 +302,7 @@ First to **5 points** wins. Points equal the value of the card you correctly dec
 
 ## 4. THE DECK
 
-```
+```text
    ┌───────────────┐  ┌───────────────┐  ┌───────────────┐
    │       1       │  │       2       │  │       3       │
    │               │  │               │  │               │
@@ -356,7 +356,7 @@ First to **5 points** wins. Points equal the value of the card you correctly dec
 
 The single hardest thing to design in this game: **why would anyone ever tell the truth?**
 
-```
+```text
    ┌─────────────────────────────────────────────────────────┐
    │                    TELL THE TRUTH                       │
    │  They declare correctly. They score. The round ends.    │
@@ -386,7 +386,7 @@ The single hardest thing to design in this game: **why would anyone ever tell th
 
 Truth is a *sacrifice*, not a strategy. So truth only appears in three situations:
 
-```
+```text
    1. KINGMAKING ── you cannot win this round, so you choose who does.
                     Your truth is a gift, and gifts make allies.
 
@@ -408,7 +408,7 @@ Truth is a *sacrifice*, not a strategy. So truth only appears in three situation
 
 ## 6. TURN FLOW
 
-```
+```text
                           ┌──────────────────┐
                           │   YOUR TURN      │
                           └────────┬─────────┘
@@ -436,7 +436,7 @@ Truth is a *sacrifice*, not a strategy. So truth only appears in three situation
                        └──────────────────────┘
 ```
 
-```
+```text
    THE TABLE SEES                        THE TABLE DOES NOT SEE
    ─────────────────────────────         ──────────────────────────
    who whispered to whom                 what was whispered
@@ -450,7 +450,7 @@ Truth is a *sacrifice*, not a strategy. So truth only appears in three situation
 
 ## 7. ROUND TIMELINE
 
-```
+```text
    t=0                                                        t=3min
    │                                                             │
    ├──── SETUP ────┬────── CIRCUIT 1 ──────┬──── CIRCUIT 2 ──────┤
@@ -476,7 +476,7 @@ Truth is a *sacrifice*, not a strategy. So truth only appears in three situation
 
 ## 8. WORKED EXAMPLE — one round, four players
 
-```
+```text
    ┌──────────────────────────────────────────────────────────────┐
    │  DEALT                                                       │
    │                                                              │
@@ -570,7 +570,7 @@ Truth is a *sacrifice*, not a strategy. So truth only appears in three situation
 
 These were not designed. They fall out of the rules, which is the test of whether the rules are any good.
 
-```
+```text
    ┌──────────────────────────────────────────────────────────────┐
    │ 1. THE TRADE           "Tell me mine, I'll tell you yours."  │
    │                                                              │
@@ -625,7 +625,7 @@ These were not designed. They fall out of the rules, which is the test of whethe
 
 ## 10. EDGE CASES AND RULINGS
 
-```
+```text
    ┌──────────────────────────────────────────────────────────────┐
    │ PLAYER GLIMPSES THEIR OWN CARD                                │
    └──────────────────────────────────────────────────────────────┘
@@ -700,7 +700,7 @@ These were not designed. They fall out of the rules, which is the test of whethe
 
 ### 11.1 Duel — 2 players
 
-```
+```text
    ┌──────────────┐        ┌──────────────┐
    │   PLAYER A   │        │   PLAYER B   │
    │  ▓ face-out  │        │  ▓ face-out  │
@@ -716,7 +716,7 @@ These were not designed. They fall out of the rules, which is the test of whethe
 
 ### 11.2 Big Table — 7–8 players
 
-```
+```text
    16 cards, 8 dealt, 8 in the centre pile.
    3-minute discussion cap per circuit.
    If nobody declares in two consecutive circuits,
@@ -729,7 +729,7 @@ Downtime is the enemy here. Do not run base rules at 8.
 
 You may ask "what is Carol?" instead of "what am I?"
 
-```
+```text
    ┌──────────────────────────────────────────────────────────┐
    │ This is the highest-value variant and the most dangerous.│
    │                                                          │
@@ -749,7 +749,7 @@ You may ask "what is Carol?" instead of "what am I?"
 
 Only add these if the base game feels thin, which it probably will not.
 
-```
+```text
    FOOL    · once per round, ask a second question on your turn
    GUARD   · immune to being MARKED
    WIDOW   · may look at one central pile card, once
@@ -770,7 +770,7 @@ Nobody may declare during the first circuit. Forces information trading to happe
 
 ## 12. COMPONENTS AND PRINT SHEET
 
-```
+```text
    ═══════════════════════════════════════════════════════
      WHAT AM I?   ·   print sheet   ·   1 page
    ═══════════════════════════════════════════════════════
@@ -816,7 +816,7 @@ Total cost at a copy shop: one sheet of card, one sheet of paper, ten minutes.
 
 ## 13. FUN AUDIT — honest assessment
 
-```
+```text
    ┌───────────────────────────────────────┬────────┬──────────────────┐
    │ WHAT                                  │ WORKS? │ WHY              │
    ├───────────────────────────────────────┼────────┼──────────────────┤
@@ -855,7 +855,7 @@ Total cost at a copy shop: one sheet of card, one sheet of paper, ten minutes.
 
 **The two real risks, stated plainly:**
 
-```
+```text
    RISK 1 · THE FIZZLE
    Everyone lies, everyone gets marked, nobody can declare,
    the round goes to the pile and scores zero.
@@ -881,7 +881,7 @@ Total cost at a copy shop: one sheet of card, one sheet of paper, ten minutes.
 
 Run four rounds, four players. Write down answers to these six questions. Nothing else matters yet.
 
-```
+```text
    ┌────┬──────────────────────────────────────────────────────┐
    │ 1  │ Did anyone ever give a truth for free?               │
    │    │ If yes → the incentive triangle is leaking.          │

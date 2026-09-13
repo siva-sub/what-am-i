@@ -2,7 +2,7 @@
 
 Derived from two reference plates actually inspected, not from taste.
 
-```
+```text
    PLATE A                        PLATE B
    Dürer, Four Horsemen           Hiroshige, Mochizuki
    c. 1496-98                     c. 1830s
@@ -18,7 +18,7 @@ Derived from two reference plates actually inspected, not from taste.
 
 ## 1. WHAT THE PLATES TEACH
 
-```
+```text
    ┌────────────────────────────────────────────────────────────┐
    │ FROM PLATE A                                               │
    │                                                            │
@@ -54,7 +54,7 @@ The mechanic is: **you cannot see your own face.**
 
 So the art states it directly.
 
-```
+```text
    ┌──────────────────────────────────────────────────────────┐
    │                                                          │
    │   EVERY FIGURE ON EVERY CARD IS SEEN FROM BEHIND.        │
@@ -83,7 +83,7 @@ So the art states it directly.
 
 ## 3. CARD ANATOMY
 
-```
+```text
    TRIM 2.5 x 3.5 in  ·  63 x 88 mm  ·  portrait
 
               ┌─────── BLEED 3 mm ────────┐
@@ -142,7 +142,7 @@ So the art states it directly.
 
 Each figure must be identifiable at 2.5 inches from across a table. Silhouette does the work; hatching is decoration.
 
-```
+```text
    ┌────┬──────────┬────────────────────────────────────────────┐
    │ 1  │ FOOL     │ coxcomb hood, 3 bells on points, bauble    │
    │    │          │ sceptre over the shoulder, short cape,     │
@@ -191,7 +191,7 @@ Each figure must be identifiable at 2.5 inches from across a table. Silhouette d
 
 ## 5. COLOUR — two tiers, one artwork
 
-```
+```text
    ┌──────────────────────────────────────────────────────────┐
    │ TIER 1 · PRINT-AND-PLAY            one ink, any printer  │
    │                                                          │
@@ -233,7 +233,7 @@ Each figure must be identifiable at 2.5 inches from across a table. Silhouette d
 
 ## 6. CARD BACK
 
-```
+```text
    ┌──────────────────────────────┐
    │ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ │
    │ ▓▓ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ▓▓ │   six motifs in a lattice:
@@ -255,7 +255,7 @@ Each figure must be identifiable at 2.5 inches from across a table. Silhouette d
 
 ## 7. TOKENS, RULE SHEET, BOX
 
-```
+```text
    TOKEN  ↺  swap / clear mark     ┌──────────┐
                                    │  ┌────┐  │
                                    │  │ ↺  │  │  woodcut spiral,
@@ -274,7 +274,7 @@ Each figure must be identifiable at 2.5 inches from across a table. Silhouette d
 
 ## 8. TYPE
 
-```
+```text
    ┌──────────────────────────────────────────────────────────┐
    │  All type: a heavy old-style serif with visible serifs   │
    │  and slightly rough edges. Woodcut-era, not modern.      │
@@ -293,7 +293,7 @@ Each figure must be identifiable at 2.5 inches from across a table. Silhouette d
 
 ## 9. GENERATION PLAN
 
-```
+```text
    ┌────┬──────────────────────────────┬─────────┬───────────┐
    │ #  │ ASSET                        │ WHY FIRST│ STATUS   │
    ├────┼──────────────────────────────┼─────────┼───────────┤
@@ -332,7 +332,7 @@ Each figure must be identifiable at 2.5 inches from across a table. Silhouette d
 
 Paste and swap the bracketed fields.
 
-```
+```text
    Print-and-play card game card, portrait orientation, 2:3 aspect
    ratio. Style: authentic 16th-century woodcut relief print after
    Albrecht Dürer — bold black ink line on warm cream laid paper,
@@ -351,7 +351,7 @@ Paste and swap the bracketed fields.
    watermark, no frame ornaments, no border flourishes.
 ```
 
-```
+```text
    ┌──────────────────────────────────────────────────────────┐
    │ FIELDS FOR EACH CARD                                     │
    ├────┬──────────┬──────────────────────────────────────────┤
@@ -392,7 +392,7 @@ Paste and swap the bracketed fields.
 
 ## 11. RISKS
 
-```
+```text
    ┌────────────────────────────────────────────────────────────┐
    │ RISK                        MITIGATION                     │
    ├────────────────────────────────────────────────────────────┤
@@ -494,7 +494,7 @@ Not eight cards. The complete product has four card groups plus tokens, and ever
    │    you can still do. Otherwise people just stop playing.          │
    └─────────────────────────────────────────────────────────────────┘
 
-```
+```text
 
 ### 12.1 Deck maths for every player count
 
@@ -520,7 +520,7 @@ Not eight cards. The complete product has four card groups plus tokens, and ever
    │  same everywhere, so the design does not break at size.   │
    └──────────────────────────────────────────────────────────┘
 
-```
+```text
 
 ### 12.2 The eight ✱ variant abilities
 
@@ -548,7 +548,7 @@ Not eight cards. The complete product has four card groups plus tokens, and ever
    │ 8  │ QUEEN ✱  │ you may declare out of turn                  │
    └────┴──────────┴──────────────────────────────────────────────┘
 
-```
+```text
 
 ## 13. GENERATION QUEUE — the full set
 
@@ -587,7 +587,7 @@ Not eight cards. The complete product has four card groups plus tokens, and ever
    │  cards wastes quota on the one thing the model is worst at.   │
    └──────────────────────────────────────────────────────────────┘
 
-```
+```text
 
 ## 14. WHAT WENT WRONG ON THE FIRST THREE
 
@@ -641,7 +641,7 @@ Logged so it does not repeat.
 
 ## 15. BATCH TWO — verdicts and core deck status
 
-```
+```text
    ┌──────┬──────────┬────────┬────────────────────────────────────┐
    │ VAL  │ CARD     │ RESULT │ NOTE                               │
    ├──────┼──────────┼────────┼────────────────────────────────────┤
@@ -663,7 +663,7 @@ Logged so it does not repeat.
 
 ### 15.1 The ORACLE failure, diagnosed
 
-```
+```text
    ASKED FOR                          RECEIVED
    ─────────────────────────────      ────────────────────────────
    body turned away from viewer       body facing the viewer
@@ -703,7 +703,7 @@ Logged so it does not repeat.
 
 ### 15.2 CORE DECK STATUS
 
-```
+```text
    ╔═══════════════════════════════════════════════════════════════╗
    ║  CORE DECK · 12 cards · 12 artworks · 4-5 players             ║
    ╠═══════════════════════════════════════════════════════════════╣
@@ -733,7 +733,7 @@ Logged so it does not repeat.
    ╚═══════════════════════════════════════════════════════════════╝
 ```
 
-```
+```text
    REMAINING AFTER THIS BATCH
    ┌─────────────────────────────────────┬────────┬─────────────┐
    │ EXPANSION  (4)  6-8 players         │ 4 cards│ next batch  │
@@ -766,7 +766,7 @@ Logged so it does not repeat.
    │      │           │        │ out past the chair back          │
    └──────┴───────────┴────────┴──────────────────────────────────┘
 
-```
+```text
 
 ### 16.1 How the ORACLE was finally fixed
 
@@ -807,7 +807,7 @@ Logged so it does not repeat.
    │ object.                                                   │
    └───────────────────────────────────────────────────────────┘
 
-```
+```text
 
 ### 16.2 THE LEVER THAT UNBLOCKED IT — a reference for camera angle
 
@@ -822,7 +822,7 @@ Logged so it does not repeat.
    for every sibling. It costs nothing and removes the single
    most common failure mode in the set.
 
-```
+```text
 
 ---
 
@@ -846,7 +846,7 @@ Logged so it does not repeat.
    ║  held in a hand, belonging to nobody                        ║
    ╚═══════════════════════════════════════════════════════════╝
 
-```
+```text
 
 ```
 
@@ -857,7 +857,7 @@ Logged so it does not repeat.
    Nobody ever gets a face. Nobody ever knows what they are.
    ────────────────────────────────────────────────────────────
 
-```
+```text
 
 ```
 
@@ -866,7 +866,7 @@ Logged so it does not repeat.
      oracle-v1-frontfacing.png mask on the face
      oracle-v2-frontfacing.png same failure, second attempt
 
-```
+```text
 
 ### 17.1 WHAT IS NOW ON DISK
 
@@ -882,7 +882,7 @@ Logged so it does not repeat.
       ├─ cards/  16 faces + back.png ...... clean names
       └─ reject/ 3 failed pieces
 
-```
+```text
 
 ```
 
@@ -900,8 +900,8 @@ Logged so it does not repeat.
    │ NOT DONE  played                                             │
    └───────────────────────────────────────────────────────────┘
 
-```
+```text
 ```
 
-```
+```text
 ```
