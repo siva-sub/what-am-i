@@ -71,10 +71,10 @@ const $$ = (sel) => [...document.querySelectorAll(sel)];
  * textContent is not usable at the call sites that matter here: the
  * HUD prompt and the answer modal emit <b> for emphasis on purpose.
  */
-const el = (tag, cls, markup) => {
+const el = (tag, cls, content) => {
   const node = document.createElement(tag);
   if (cls) node.className = cls;
-  if (markup != null) node.innerHTML = markup;
+  if (content != null) node.innerHTML = markup(content);
   return node;
 };
 
@@ -436,7 +436,7 @@ function draw() {
   /* Markup because the prompt emphasises names in <b>. Every name it
      interpolates goes through nameOf() -> esc(), and names were already
      stripped of markup characters at ingress. See the el() contract. */
-  $("#hud-prompt").innerHTML = promptFor(s, myTurn, activePid);
+  $("#hud-prompt").innerHTML = markup(promptFor(s, myTurn, activePid));
   drawActions(s, myTurn);
   drawDeduction(s);
   drawLog(s);
@@ -1182,9 +1182,13 @@ $("#modal-answer").addEventListener("transitionend", () => {});
 function fillAnswerModal() {
   const s = app.view;
   if (!s || s.phase !== PHASE.ANSWERING) return;
-  const asker = nameOf(s, s.pending.asker);
-  $("#answer-question").innerHTML =
-    `<b>${asker}</b> is asking what <b>they</b> are.`;
+    const asker = nameOf(s, s.pending.asker);
+    /* nameOf already escapes, and markup() parses to an allowlist on top
+       of that. The <b> survives because it is in the allowlist; anything
+       else a name might have carried does not. */
+    $("#answer-question").innerHTML = markup(
+      `<b>${asker}</b> is asking what <b>they</b> are.`,
+    );
   const box = $("#answer-roles");
   box.textContent = "";
   ROLE_LIST.forEach((r) => {
