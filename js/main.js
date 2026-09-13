@@ -307,7 +307,18 @@ function receive(msg) {
     }
 
     case "roster": {
-      if (app.mode !== "host") break;
+      /* This runs for EVERYONE, host and guest alike.
+
+           It used to be gated on `app.mode === "host"`, which meant a
+           guest received the roster and threw it away — and with it the
+           host's public key. Without that key the guest has no entry in
+           pairKeys, and the transport drops unopenable envelopes without
+           a word: `if (!key) return;` in net.js.
+
+           So every private snapshot the host sent was silently discarded
+           and a joining player was never let into the game. The failure
+           looked like the host starting without them, which is exactly
+           what it was. */
       msg.players.forEach((p) => app.net.trust(p.pid, p.pub));
       app.roster = msg.players;
       renderLobby();
@@ -378,6 +389,17 @@ function render() {
 function draw() {
   const s = app.view;
   if (!s) return;
+
+  /* A guest never presses Start, so nothing ever moved it off the lobby.
+
+     It received the game state perfectly well and rendered it into HUD
+     elements that were not on screen, which made the failure look like
+     the host starting without them rather than a missing transition.
+     Any phase past the lobby means a game is running, so the table is
+     the right screen whichever seat you are in. */
+  if (s.phase !== PHASE.LOBBY && !$("#table-screen").classList.contains("on")) {
+    openTable();
+  }
 
   const seated = seatPlayers(s);
   const me = seated.find((p) => p.pid === myPid);

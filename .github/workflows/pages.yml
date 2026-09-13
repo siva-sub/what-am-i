@@ -47,6 +47,12 @@ jobs:
       - name: Input boundary
         run: node tools/test-sanitize.mjs
 
+      # A guest must be able to open what the host sends it. This is the
+      # ordering the "player isn't let in" bug broke, and it fails
+      # silently when it does, so it is pinned.
+      - name: Host/guest handshake
+        run: node tools/test-handshake.mjs
+
       # Neither esc() nor cleanName() neutralises a URI scheme, so the
       # only thing keeping a javascript: URL out of the page is that no
       # name is ever written into an href or a src. That is an

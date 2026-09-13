@@ -93,6 +93,7 @@ It must be served over HTTP. ES modules and WebCrypto both refuse to run from a 
 ```bash
 node tools/test-rules.mjs       # 55 assertions on the rules engine
 node tools/test-sanitize.mjs    # 45 on the input boundary
+node tools/test-handshake.mjs   # 7 on the host/guest key exchange
 node tools/check-url-sinks.mjs  # no player string reaches an href or a src
 node tools/check-assets.mjs     # walks the real module import graph
 node tools/sim-balance.mjs 400 4 8
@@ -105,6 +106,8 @@ The rules engine is pure — no DOM, no network, no timers — so the host, the 
 `test-sanitize.mjs` covers the boundary between other players and your DOM. Names and avatars arrive over the network and are rendered as markup, so a guest could once have sent `avatar: "<img src=x onerror=…>"` and had it run in every other player's browser. That is fixed in one place now, and the fix is tested rather than asserted.
 
 That suite also documents where the filters stop. Neither `esc()` nor `cleanName()` neutralises a URI scheme — `javascript:x=1` passes through both, because a colon is not a markup character. The app is safe in a URL position only because no player-controlled string is ever assigned to an `href` or a `src`. `check-url-sinks.mjs` enforces that, and I confirmed it fails on a deliberately injected violation rather than assuming it would.
+
+`test-handshake.mjs` pins the order of the key exchange. A guest learns the host's public key from the roster broadcast, and the transport drops anything it cannot open without a word — so if the roster ever stops being applied on the guest, a joining player is silently locked out while everything looks healthy. That bug shipped once.
 
 `sim-balance.mjs` is the one that caught the real problem. It drives complete matches through the engine and reports how often a declaration came from knowing versus guessing. If "from certainty" drops or "circuits collapsed" climbs, the game has silently gone back to being a coin flip.
 
